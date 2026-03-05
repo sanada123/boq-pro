@@ -1,6 +1,6 @@
 FROM python:3.11-slim
 
-# System deps for PyMuPDF only (OpenCV deps added in Phase 4)
+# System deps for PyMuPDF only (OpenCV deps added in Phase 4+)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libfontconfig1 libfreetype6 \
     && rm -rf /var/lib/apt/lists/*
