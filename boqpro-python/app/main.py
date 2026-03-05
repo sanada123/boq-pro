@@ -1,5 +1,7 @@
 """BOQ Pro — FastAPI Application."""
 import os
+import asyncio
+import logging
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -11,13 +13,28 @@ from app.api import auth, projects, plan_readings, quantity_items
 from app.api import standards, prices, formulas, profiles
 from app.api import upload, analysis, health
 
+logger = logging.getLogger("boqpro")
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Create tables on startup (dev mode). In production use Alembic."""
+    """Create tables on startup with retry logic for Railway cold starts."""
     engine = get_engine()
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+    max_retries = 5
+    for attempt in range(max_retries):
+        try:
+            async with engine.begin() as conn:
+                await conn.run_sync(Base.metadata.create_all)
+            logger.info("Database tables ready")
+            break
+        except Exception as e:
+            if attempt < max_retries - 1:
+                wait = 2 ** attempt
+                logger.warning(f"DB connection attempt {attempt + 1}/{max_retries} failed: {e}. Retrying in {wait}s...")
+                await asyncio.sleep(wait)
+            else:
+                logger.error(f"Could not connect to database after {max_retries} attempts: {e}")
+                logger.error("App will start but database operations will fail.")
     yield
     await engine.dispose()
 
