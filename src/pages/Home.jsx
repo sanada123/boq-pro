@@ -127,11 +127,14 @@ export default function Home() {
   // === START ANALYSIS ===
   const handleStartAnalysis = async () => {
     setAnalysisError(null);
+    let project = null;
+
+    try {
     // Create project
     const allPlanUrls = [];
     const firstPlan = floors.find(f => (f.plans || []).length > 0)?.plans?.[0];
 
-    const project = await api.entities.Project.create({
+    project = await api.entities.Project.create({
       name: projectName.trim(),
       description: projectDescription.trim(),
       work_type: workType,
@@ -162,12 +165,11 @@ export default function Home() {
     const uploadFile = async (file) => {
       return await api.integrations.Core.UploadFile({ file });
     };
-
-    try {
     // For each plan: extract text, render high-res tiles, then run 3-stage LLM analysis
     const readings = [];
     for (const plan of allPlanUrls) {
       // 1. Extract text from PDF (best effort)
+      setAnalysisStep("upload");
       let extractedText = null;
       try {
         const pdfResult = await api.functions.invoke('processPdf', { file_url: plan.file_url });
@@ -182,12 +184,16 @@ export default function Home() {
       let fullPageUrls = [plan.file_url];
 
       if (isPdf) {
+        setAnalysisStep("upload"); // Show "upload" during tiling — this takes time
         try {
+          console.log("[Analysis] Starting PDF tiling for", plan.file_url);
           const tiles = await extractPdfTiles(plan.file_url, uploadFile);
           if (tiles.length > 0) {
+            console.log(`[Analysis] Created ${tiles.length} tiles, now rendering full pages`);
             const fullPages = await extractPdfFullPage(plan.file_url, uploadFile);
             fullPageUrls = fullPages.map(fp => fp.file_url);
             fileUrls = [...fullPageUrls, ...tiles.map(t => t.file_url)];
+            console.log(`[Analysis] Total ${fileUrls.length} images ready for LLM`);
           }
         } catch (e) {
           console.log("PDF tiling failed, falling back to raw PDF", plan.file_url, e);

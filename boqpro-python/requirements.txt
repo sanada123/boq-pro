@@ -16,14 +16,14 @@ passlib[bcrypt]>=1.7.4
 # AI / LLM
 anthropic>=0.34.0
 
-# Computer Vision (Phase 4+)
-opencv-python-headless>=4.8.0
-ultralytics>=8.0.0
-numpy>=1.24.0
-scipy>=1.11.0
-Pillow>=10.0.0
+# Computer Vision (Phase 4+ — uncomment when needed)
+# opencv-python-headless>=4.8.0
+# ultralytics>=8.0.0
+# numpy>=1.24.0
+# scipy>=1.11.0
+# Pillow>=10.0.0
 
-# OCR (Phase 5+)
+# OCR (Phase 5+ — uncomment when needed)
 # paddlepaddle>=2.5.0
 # paddleocr>=2.7.0
 
