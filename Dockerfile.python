@@ -10,14 +10,14 @@ WORKDIR /build
 
 # Install JS deps (cached layer)
 COPY package.json package-lock.json ./
-RUN npm ci --ignore-scripts
+RUN npm ci
 
 # Copy frontend source + config files
 COPY src/ src/
 COPY index.html vite.config.js tailwind.config.js postcss.config.js ./
 
 # Build static assets
-RUN npm run build
+RUN npm run build && ls -la dist/
 
 
 # ── Stage 2: Python backend ─────────────────────────────────
