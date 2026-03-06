@@ -33,7 +33,8 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       setIsAuthenticated(false);
       setUser(null);
-      if (error.status === 401) {
+      // Clear stale token on 401 (invalid token) or 404 (user deleted / DB reset)
+      if (error.status === 401 || error.status === 404) {
         localStorage.removeItem('boqpro_token');
         setAuthError({ type: 'auth_required', message: 'Authentication required' });
       }
