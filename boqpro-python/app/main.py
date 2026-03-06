@@ -89,6 +89,7 @@ os.makedirs(settings.storage_path, exist_ok=True)
 app.mount("/uploads", StaticFiles(directory=settings.storage_path), name="uploads")
 
 # Serve frontend static files in production (after Vite build)
-dist_path = os.path.join(os.path.dirname(__file__), "..", "..", "dist")
+# In Docker: __file__ = /app/app/main.py → dist at /app/dist (one level up)
+dist_path = os.path.join(os.path.dirname(__file__), "..", "dist")
 if os.path.isdir(dist_path):
     app.mount("/", StaticFiles(directory=dist_path, html=True), name="frontend")
