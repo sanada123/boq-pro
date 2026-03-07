@@ -6,7 +6,7 @@ import traceback
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.config import get_settings
@@ -92,4 +92,21 @@ app.mount("/uploads", StaticFiles(directory=settings.storage_path), name="upload
 # In Docker: __file__ = /app/app/main.py → dist at /app/dist (one level up)
 dist_path = os.path.join(os.path.dirname(__file__), "..", "dist")
 if os.path.isdir(dist_path):
-    app.mount("/", StaticFiles(directory=dist_path, html=True), name="frontend")
+    # Mount Vite's hashed asset bundles (JS/CSS)
+    assets_dir = os.path.join(dist_path, "assets")
+    if os.path.isdir(assets_dir):
+        app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
+
+    # SPA catch-all: serve index.html for any non-API route
+    # This enables client-side routing (/Login, /Projects, etc.)
+    @app.get("/{full_path:path}", include_in_schema=False)
+    async def serve_frontend(full_path: str):
+        # Try serving an exact file from dist/ (favicon.ico, robots.txt, etc.)
+        file_path = os.path.join(os.path.abspath(dist_path), full_path)
+        if full_path and os.path.isfile(file_path):
+            return FileResponse(file_path)
+        # SPA fallback — React Router handles the rest
+        return FileResponse(
+            os.path.join(dist_path, "index.html"),
+            media_type="text/html",
+        )
