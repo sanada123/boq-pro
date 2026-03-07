@@ -8,24 +8,24 @@ const WORK_TYPES = [
     label: "קונסטרוקציה",
     desc: "בטון, ברזל, תבניות, כלונסאות",
     icon: Building2,
-    color: "border-cyan-500/30 bg-cyan-500/5",
-    activeColor: "ring-2 ring-cyan-500 border-cyan-500/50 bg-cyan-500/10",
+    color: "border-blue-200 bg-cyan-500/5",
+    activeColor: "ring-2 ring-blue-500 border-blue-400 bg-blue-50",
   },
   {
     id: "finishing",
     label: "גמרים",
     desc: "בלוקים, גבס, טיח, צבע, ריצוף, חלונות, דלתות",
     icon: Paintbrush,
-    color: "border-emerald-500/30 bg-emerald-500/5",
-    activeColor: "ring-2 ring-emerald-500 border-emerald-500/50 bg-emerald-500/10",
+    color: "border-emerald-500/30 bg-emerald-50",
+    activeColor: "ring-2 ring-emerald-500 border-emerald-500/50 bg-emerald-50",
   },
   {
     id: "both",
     label: "קונסטרוקציה + גמרים",
     desc: "כל סוגי העבודה",
     icon: Layers,
-    color: "border-amber-500/30 bg-amber-500/5",
-    activeColor: "ring-2 ring-amber-500 border-amber-500/50 bg-amber-500/10",
+    color: "border-amber-200 bg-amber-50",
+    activeColor: "ring-2 ring-amber-500 border-amber-500/50 bg-amber-50",
   },
 ];
 
@@ -71,7 +71,7 @@ export default function WorkTypeStep({ workType, setWorkType, categories, setCat
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-lg font-bold text-slate-100 mb-1">סוג עבודה</h2>
+        <h2 className="text-lg font-bold text-slate-900 mb-1">סוג עבודה</h2>
         <p className="text-sm text-slate-500">בחר את סוג העבודות שתרצה לחשב</p>
       </div>
 
@@ -83,12 +83,12 @@ export default function WorkTypeStep({ workType, setWorkType, categories, setCat
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.05 }}
             onClick={() => handleWorkTypeSelect(wt.id)}
-            className={`rounded border-2 p-5 text-right transition-all hover:bg-white/[0.02] ${
-              workType === wt.id ? wt.activeColor : "border-[#1e293b] bg-[#0d1320] hover:border-[#334155]"
+            className={`rounded border-2 p-5 text-right transition-all hover:bg-black/[0.02] ${
+              workType === wt.id ? wt.activeColor : "border-slate-200 bg-slate-50 hover:border-slate-300"
             }`}
           >
-            <wt.icon className={`w-7 h-7 mb-3 ${workType === wt.id ? "text-slate-200" : "text-slate-500"}`} />
-            <h3 className="font-bold text-slate-200 text-sm">{wt.label}</h3>
+            <wt.icon className={`w-7 h-7 mb-3 ${workType === wt.id ? "text-slate-800" : "text-slate-500"}`} />
+            <h3 className="font-bold text-slate-800 text-sm">{wt.label}</h3>
             <p className="text-[11px] text-slate-500 mt-1">{wt.desc}</p>
           </motion.button>
         ))}
@@ -96,7 +96,7 @@ export default function WorkTypeStep({ workType, setWorkType, categories, setCat
 
       {workType && (
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-          <h3 className="text-sm font-bold text-slate-300 mb-2">קטגוריות חישוב</h3>
+          <h3 className="text-sm font-bold text-slate-700 mb-2">קטגוריות חישוב</h3>
           <p className="text-xs text-slate-500 mb-3">בחר אילו סוגי עבודות לכלול. ניתן לבטל סימון של קטגוריות לא רלוונטיות.</p>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             {availableCategories.map(cat => {
@@ -107,8 +107,8 @@ export default function WorkTypeStep({ workType, setWorkType, categories, setCat
                   onClick={() => toggleCategory(cat.id)}
                   className={`rounded border p-3 text-right transition-all text-sm ${
                     isSelected
-                      ? "border-amber-500/40 bg-amber-500/10 text-slate-200"
-                      : "border-[#1e293b] bg-[#0d1320] text-slate-500 hover:border-[#334155]"
+                      ? "border-amber-300 bg-amber-50 text-slate-800"
+                      : "border-slate-200 bg-slate-50 text-slate-500 hover:border-slate-300"
                   }`}
                 >
                   <span className="font-semibold block">{cat.label}</span>

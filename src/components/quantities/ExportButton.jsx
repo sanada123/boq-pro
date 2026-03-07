@@ -526,7 +526,7 @@ export default function ExportButton({ items, projectName }) {
         onClick={exportToPdf}
         disabled={exporting || !items?.length}
         variant="outline"
-        className="gap-1.5 sm:gap-2 h-9 sm:h-10 px-3 sm:px-5 text-xs sm:text-sm font-bold flex-1 sm:flex-none eng-mono tracking-wider border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10 rounded"
+        className="gap-1.5 sm:gap-2 h-9 sm:h-10 px-3 sm:px-5 text-xs sm:text-sm font-bold flex-1 sm:flex-none eng-mono tracking-wider border-emerald-500/30 text-emerald-600 hover:bg-emerald-50 rounded"
       >
         {exporting ? (
           <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />

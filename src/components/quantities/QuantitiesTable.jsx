@@ -22,9 +22,9 @@ const SECTION_LABELS = {
 };
 
 const SECTION_COLORS = {
-  earthworks: "bg-amber-500/15 border-amber-500/40 text-amber-400",
-  concrete_foundations: "bg-slate-500/15 border-slate-500/40 text-slate-300",
-  skeleton: "bg-cyan-500/15 border-cyan-500/40 text-cyan-400",
+  earthworks: "bg-amber-50 border-amber-300 text-amber-600",
+  concrete_foundations: "bg-slate-500/15 border-slate-500/40 text-slate-700",
+  skeleton: "bg-cyan-500/15 border-cyan-500/40 text-blue-600",
   piles: "bg-orange-500/15 border-orange-500/40 text-orange-400",
   masonry: "bg-stone-500/15 border-stone-500/40 text-stone-400",
   plaster: "bg-yellow-500/15 border-yellow-500/40 text-yellow-400",
@@ -118,7 +118,7 @@ export default function QuantitiesTable({ items, onItemUpdated }) {
             >
               <button
                 onClick={() => toggleSection(section)}
-                className="w-full flex items-center justify-between p-3 sm:p-4 hover:bg-white/[0.02] transition-colors"
+                className="w-full flex items-center justify-between p-3 sm:p-4 hover:bg-black/[0.02] transition-colors"
               >
                 <div className="flex items-center gap-2 sm:gap-3">
                   {isExpanded ? (
@@ -133,7 +133,7 @@ export default function QuantitiesTable({ items, onItemUpdated }) {
                     ({sectionItems.length})
                   </span>
                 </div>
-                <span className="font-bold text-amber-400 text-xs sm:text-base eng-number">
+                <span className="font-bold text-amber-600 text-xs sm:text-base eng-number">
                   ₪{sectionTotal.toLocaleString("he-IL", { minimumFractionDigits: 0 })}
                 </span>
               </button>
@@ -150,7 +150,7 @@ export default function QuantitiesTable({ items, onItemUpdated }) {
                     <div className="hidden sm:block overflow-x-auto">
                       <table className="w-full text-sm">
                         <thead>
-                          <tr className="bg-[#0d1320] border-t border-[#1e293b]">
+                          <tr className="bg-slate-50 border-t border-slate-200">
                             <th className="text-right font-bold px-4 py-2.5 w-16 text-slate-400">מס׳</th>
                             <th className="text-right font-bold px-4 py-2.5 text-slate-400">תיאור</th>
                             <th className="text-right font-bold px-4 py-2.5 w-20 text-slate-400">יחידה</th>
@@ -163,11 +163,11 @@ export default function QuantitiesTable({ items, onItemUpdated }) {
                         </thead>
                         <tbody>
                           {sectionItems.map((item) => (
-                            <tr key={item.id} className="hover:bg-white/[0.02] border-t border-[#1e293b]/50">
+                            <tr key={item.id} className="hover:bg-black/[0.02] border-t border-slate-200/50">
                               <td className="text-sm text-slate-500 eng-mono px-4 py-2.5">
                                 {item.item_number || "-"}
                               </td>
-                              <td className="text-sm font-medium text-slate-200 px-4 py-2.5">
+                              <td className="text-sm font-medium text-slate-800 px-4 py-2.5">
                                 {item.description}
                                 {item.notes && (
                                   <p className="text-xs text-slate-500 mt-1">{item.notes}</p>
@@ -184,10 +184,10 @@ export default function QuantitiesTable({ items, onItemUpdated }) {
                                     onChange={(e) =>
                                       setEditData({ ...editData, quantity: e.target.value })
                                     }
-                                    className="h-8 w-20 text-sm bg-[#0d1320] border-[#1e293b] text-slate-200"
+                                    className="h-8 w-20 text-sm bg-slate-50 border-slate-200 text-slate-800"
                                   />
                                 ) : (
-                                  <span className="text-sm font-medium text-slate-300 eng-number">
+                                  <span className="text-sm font-medium text-slate-700 eng-number">
                                     {item.quantity?.toLocaleString("he-IL")}
                                   </span>
                                 )}
@@ -200,7 +200,7 @@ export default function QuantitiesTable({ items, onItemUpdated }) {
                                     onChange={(e) =>
                                       setEditData({ ...editData, unit_price: e.target.value })
                                     }
-                                    className="h-8 w-24 text-sm bg-[#0d1320] border-[#1e293b] text-slate-200"
+                                    className="h-8 w-24 text-sm bg-slate-50 border-slate-200 text-slate-800"
                                   />
                                 ) : (
                                   <span className="text-sm text-slate-400 eng-number">
@@ -208,7 +208,7 @@ export default function QuantitiesTable({ items, onItemUpdated }) {
                                   </span>
                                 )}
                               </td>
-                              <td className="text-sm font-bold text-amber-400 px-4 py-2.5 eng-number">
+                              <td className="text-sm font-bold text-amber-600 px-4 py-2.5 eng-number">
                                 ₪{(item.total_price || 0).toLocaleString("he-IL")}
                               </td>
                               <td className="text-xs text-slate-500 px-4 py-2.5 eng-mono">
@@ -220,7 +220,7 @@ export default function QuantitiesTable({ items, onItemUpdated }) {
                                     <Button
                                       size="icon"
                                       variant="ghost"
-                                      className="h-7 w-7 text-emerald-400 hover:bg-emerald-500/10"
+                                      className="h-7 w-7 text-emerald-600 hover:bg-emerald-50"
                                       onClick={() => saveEdit(item)}
                                     >
                                       <Check className="w-4 h-4" />
@@ -228,7 +228,7 @@ export default function QuantitiesTable({ items, onItemUpdated }) {
                                     <Button
                                       size="icon"
                                       variant="ghost"
-                                      className="h-7 w-7 text-rose-400 hover:bg-rose-500/10"
+                                      className="h-7 w-7 text-rose-600 hover:bg-rose-50"
                                       onClick={cancelEdit}
                                     >
                                       <X className="w-4 h-4" />
@@ -238,7 +238,7 @@ export default function QuantitiesTable({ items, onItemUpdated }) {
                                   <Button
                                     size="icon"
                                     variant="ghost"
-                                    className="h-7 w-7 text-slate-500 hover:text-amber-400 hover:bg-amber-500/10"
+                                    className="h-7 w-7 text-slate-500 hover:text-amber-600 hover:bg-amber-50"
                                     onClick={() => startEdit(item)}
                                   >
                                     <Pencil className="w-3.5 h-3.5" />
@@ -290,17 +290,17 @@ function MobileItemCard({ item, editingId, editData, setEditData, startEdit, can
   const isEditing = editingId === item.id;
 
   return (
-    <div className="p-3 hover:bg-white/[0.02]">
+    <div className="p-3 hover:bg-black/[0.02]">
       <div className="flex items-start justify-between gap-2 mb-1.5">
-        <p className="text-xs font-medium text-slate-200 leading-relaxed flex-1">
+        <p className="text-xs font-medium text-slate-800 leading-relaxed flex-1">
           {item.description}
         </p>
         {isEditing ? (
           <div className="flex gap-1 shrink-0">
-            <Button size="icon" variant="ghost" className="h-6 w-6 text-emerald-400" onClick={() => saveEdit(item)}>
+            <Button size="icon" variant="ghost" className="h-6 w-6 text-emerald-600" onClick={() => saveEdit(item)}>
               <Check className="w-3.5 h-3.5" />
             </Button>
-            <Button size="icon" variant="ghost" className="h-6 w-6 text-rose-400" onClick={cancelEdit}>
+            <Button size="icon" variant="ghost" className="h-6 w-6 text-rose-600" onClick={cancelEdit}>
               <X className="w-3.5 h-3.5" />
             </Button>
           </div>
@@ -321,7 +321,7 @@ function MobileItemCard({ item, editingId, editData, setEditData, startEdit, can
         {item.standard_reference && <span className="text-slate-600 eng-mono">{item.standard_reference}</span>}
       </div>
 
-      <div className="flex items-center justify-between mt-2 pt-2 border-t border-[#1e293b]">
+      <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-200">
         {isEditing ? (
           <div className="flex gap-2 flex-1">
             <div className="flex-1">
@@ -330,7 +330,7 @@ function MobileItemCard({ item, editingId, editData, setEditData, startEdit, can
                 type="number"
                 value={editData.quantity}
                 onChange={(e) => setEditData({ ...editData, quantity: e.target.value })}
-                className="h-7 text-xs bg-[#0d1320] border-[#1e293b] text-slate-200"
+                className="h-7 text-xs bg-slate-50 border-slate-200 text-slate-800"
               />
             </div>
             <div className="flex-1">
@@ -339,7 +339,7 @@ function MobileItemCard({ item, editingId, editData, setEditData, startEdit, can
                 type="number"
                 value={editData.unit_price}
                 onChange={(e) => setEditData({ ...editData, unit_price: e.target.value })}
-                className="h-7 text-xs bg-[#0d1320] border-[#1e293b] text-slate-200"
+                className="h-7 text-xs bg-slate-50 border-slate-200 text-slate-800"
               />
             </div>
           </div>
@@ -348,7 +348,7 @@ function MobileItemCard({ item, editingId, editData, setEditData, startEdit, can
             <div className="flex gap-3 text-[11px] text-slate-500">
               <span className="eng-number">{item.quantity?.toLocaleString("he-IL")} × ₪{(item.unit_price || 0).toLocaleString("he-IL")}</span>
             </div>
-            <span className="text-xs font-bold text-amber-400 eng-number">
+            <span className="text-xs font-bold text-amber-600 eng-number">
               ₪{(item.total_price || 0).toLocaleString("he-IL")}
             </span>
           </>

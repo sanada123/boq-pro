@@ -99,7 +99,7 @@ export default function AnalysisProgress({ currentStep, pass1Summary }) {
     <div className="w-full mx-auto">
       <div className="eng-card overflow-hidden">
         {/* ── Top progress bar ── */}
-        <div className="h-[3px] bg-[#1e293b] relative overflow-hidden">
+        <div className="h-[3px] bg-slate-100 relative overflow-hidden">
           <motion.div
             className="absolute top-0 right-0 h-full bg-gradient-to-l from-amber-500 via-amber-400 to-amber-600"
             initial={{ width: 0 }}
@@ -120,25 +120,25 @@ export default function AnalysisProgress({ currentStep, pass1Summary }) {
             <div className="flex items-center gap-3">
               <div className="relative w-10 h-10">
                 <motion.div
-                  className="absolute inset-0 border border-amber-500/20 rounded-lg"
+                  className="absolute inset-0 border border-amber-200 rounded-lg"
                   animate={{ rotate: 360 }}
                   transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
                 />
-                <div className="absolute inset-[3px] bg-amber-500/10 border border-amber-500/25 rounded-md flex items-center justify-center">
-                  <Hexagon className="w-4 h-4 text-amber-400" />
+                <div className="absolute inset-[3px] bg-amber-50 border border-amber-200 rounded-md flex items-center justify-center">
+                  <Hexagon className="w-4 h-4 text-amber-600" />
                 </div>
               </div>
               <div>
-                <h3 className="text-sm font-bold text-slate-100">מנתח תכנית...</h3>
+                <h3 className="text-sm font-bold text-slate-900">מנתח תכנית...</h3>
                 <p className="text-[11px] text-slate-500 mt-0.5">
                   שלב {currentIndex + 1} מתוך {STEPS.length}
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-1.5 bg-[#0d1320] border border-[#1e293b] rounded-md px-3 py-1.5">
+            <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200 rounded-md px-3 py-1.5">
               <SpinningDashes />
               <span
-                className="text-xs font-bold text-amber-400"
+                className="text-xs font-bold text-amber-600"
                 style={{ fontFamily: "'JetBrains Mono', monospace" }}
               >
                 {progressPct}%
@@ -197,10 +197,10 @@ export default function AnalysisProgress({ currentStep, pass1Summary }) {
                     <motion.div
                       className={`relative overflow-hidden rounded-lg border p-3.5 transition-colors ${
                         isActive
-                          ? "bg-[#111827] border-amber-500/30"
+                          ? "bg-white border-amber-200"
                           : isDone
-                          ? "bg-[#0d1320] border-emerald-500/20"
-                          : "bg-[#0d1320]/50 border-[#1e293b]/50"
+                          ? "bg-slate-50 border-emerald-200"
+                          : "bg-slate-50/50 border-slate-200/50"
                       }`}
                       whileHover={
                         !isPending
@@ -230,7 +230,7 @@ export default function AnalysisProgress({ currentStep, pass1Summary }) {
                       {/* Gradient overlay for active/done */}
                       {isActive && (
                         <div
-                          className="absolute inset-0 bg-gradient-to-l from-amber-500/15 to-transparent pointer-events-none"
+                          className="absolute inset-0 bg-gradient-to-l from-amber-100 to-transparent pointer-events-none"
                           style={{
                             backgroundSize: "50% 100%",
                             backgroundPosition: "right",
@@ -243,7 +243,7 @@ export default function AnalysisProgress({ currentStep, pass1Summary }) {
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
-                          className="absolute inset-0 bg-gradient-to-l from-emerald-500/8 to-transparent pointer-events-none"
+                          className="absolute inset-0 bg-gradient-to-l from-emerald-50 to-transparent pointer-events-none"
                           style={{
                             backgroundSize: "50% 100%",
                             backgroundPosition: "right",
@@ -258,10 +258,10 @@ export default function AnalysisProgress({ currentStep, pass1Summary }) {
                           <div
                             className={`w-8 h-8 rounded-md flex items-center justify-center shrink-0 transition-all ${
                               isActive
-                                ? "bg-amber-500/15"
+                                ? "bg-amber-50"
                                 : isDone
-                                ? "bg-emerald-500/10"
-                                : "bg-[#1e293b]/50"
+                                ? "bg-emerald-50"
+                                : "bg-slate-100/50"
                             }`}
                           >
                             <AnimatePresence mode="wait">
@@ -297,9 +297,9 @@ export default function AnalysisProgress({ currentStep, pass1Summary }) {
                           <span
                             className={`text-sm font-medium transition-colors ${
                               isActive
-                                ? "text-amber-300"
+                                ? "text-amber-600"
                                 : isDone
-                                ? "text-emerald-400/80"
+                                ? "text-emerald-600/80"
                                 : "text-slate-600"
                             }`}
                           >
@@ -321,7 +321,7 @@ export default function AnalysisProgress({ currentStep, pass1Summary }) {
                                   stiffness: 400,
                                   damping: 25,
                                 }}
-                                className="px-2.5 py-1 bg-amber-500/15 border border-amber-500/25 rounded text-[10px] font-bold text-amber-400 tracking-wider whitespace-nowrap"
+                                className="px-2.5 py-1 bg-amber-50 border border-amber-200 rounded text-[10px] font-bold text-amber-600 tracking-wider whitespace-nowrap"
                                 style={{
                                   fontFamily: "'JetBrains Mono', monospace",
                                 }}
@@ -358,11 +358,11 @@ export default function AnalysisProgress({ currentStep, pass1Summary }) {
               initial={{ opacity: 0, y: 12, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="mt-4 bg-[#0d1320] rounded-lg border border-cyan-500/20 p-4 overflow-hidden relative"
+              className="mt-4 bg-slate-50 rounded-lg border border-blue-200 p-4 overflow-hidden relative"
             >
               {/* Subtle gradient */}
               <div
-                className="absolute inset-0 bg-gradient-to-l from-cyan-500/8 to-transparent pointer-events-none"
+                className="absolute inset-0 bg-gradient-to-l from-blue-50 to-transparent pointer-events-none"
                 style={{
                   backgroundSize: "40% 100%",
                   backgroundPosition: "right",
@@ -371,26 +371,26 @@ export default function AnalysisProgress({ currentStep, pass1Summary }) {
               />
               <div className="relative">
                 <h4
-                  className="text-[10px] font-bold text-cyan-400/70 mb-2.5 tracking-wider uppercase"
+                  className="text-[10px] font-bold text-blue-600/70 mb-2.5 tracking-wider uppercase"
                   style={{ fontFamily: "'JetBrains Mono', monospace" }}
                 >
                   סיכום קריאה
                 </h4>
                 <div className="grid grid-cols-2 gap-2">
-                  <div className="bg-[#111827] rounded border border-[#1e293b] px-3 py-2">
+                  <div className="bg-white rounded border border-slate-200 px-3 py-2">
                     <span className="text-[10px] text-slate-500 block">סוג</span>
-                    <span className="text-sm font-semibold text-slate-200">
+                    <span className="text-sm font-semibold text-slate-800">
                       {pass1Summary.plan_type}
                     </span>
                   </div>
-                  <div className="bg-[#111827] rounded border border-[#1e293b] px-3 py-2">
+                  <div className="bg-white rounded border border-slate-200 px-3 py-2">
                     <span className="text-[10px] text-slate-500 block">אלמנטים</span>
-                    <span className="text-sm font-bold text-cyan-400 eng-number">
+                    <span className="text-sm font-bold text-blue-600 eng-number">
                       {pass1Summary.element_count}
                     </span>
                   </div>
                   {pass1Summary.unclear_count > 0 && (
-                    <div className="col-span-2 bg-amber-500/5 rounded border border-amber-500/20 px-3 py-2 flex items-center gap-2">
+                    <div className="col-span-2 bg-amber-50 rounded border border-amber-200 px-3 py-2 flex items-center gap-2">
                       <svg width="14" height="14" viewBox="0 0 16 16">
                         <path
                           d="M8 1.5L14.5 13H1.5L8 1.5Z"
@@ -406,7 +406,7 @@ export default function AnalysisProgress({ currentStep, pass1Summary }) {
                           strokeLinecap="round"
                         />
                       </svg>
-                      <span className="text-xs text-amber-400">
+                      <span className="text-xs text-amber-600">
                         לא ברורים:{" "}
                         <span className="font-bold eng-number">
                           {pass1Summary.unclear_count}

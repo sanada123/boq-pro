@@ -76,9 +76,9 @@ export default function StandardFormDialog({ standard, onSaved, onClose }) {
 
   return (
     <Dialog open onOpenChange={onClose}>
-      <DialogContent className="max-w-lg mx-3 sm:mx-auto bg-[#111827] border-[#1e293b]" dir="rtl">
+      <DialogContent className="max-w-lg mx-3 sm:mx-auto bg-white border-slate-200" dir="rtl">
         <DialogHeader>
-          <DialogTitle className="text-base sm:text-lg text-slate-100">
+          <DialogTitle className="text-base sm:text-lg text-slate-900">
             {isEdit ? "עריכת סעיף תקן" : "הוספת סעיף תקן"}
           </DialogTitle>
         </DialogHeader>
@@ -88,12 +88,12 @@ export default function StandardFormDialog({ standard, onSaved, onClose }) {
             <div className="space-y-1.5">
               <Label className="text-xs sm:text-sm text-slate-400">סעיף</Label>
               <Select value={form.section} onValueChange={(v) => handleChange("section", v)}>
-                <SelectTrigger className="h-9 sm:h-10 text-xs sm:text-sm bg-[#0d1320] border-[#1e293b] text-slate-200">
+                <SelectTrigger className="h-9 sm:h-10 text-xs sm:text-sm bg-slate-50 border-slate-200 text-slate-800">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-[#1e293b] border-[#334155]">
+                <SelectContent className="bg-slate-100 border-slate-300">
                   {SECTIONS.map((s) => (
-                    <SelectItem key={s.value} value={s.value} className="text-slate-200 focus:bg-amber-500/10 focus:text-amber-400">{s.label}</SelectItem>
+                    <SelectItem key={s.value} value={s.value} className="text-slate-800 focus:bg-amber-50 focus:text-blue-600">{s.label}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -103,7 +103,7 @@ export default function StandardFormDialog({ standard, onSaved, onClose }) {
               <Input
                 value={form.section_name_he}
                 onChange={(e) => handleChange("section_name_he", e.target.value)}
-                className="h-9 sm:h-10 text-xs sm:text-sm bg-[#0d1320] border-[#1e293b] text-slate-200"
+                className="h-9 sm:h-10 text-xs sm:text-sm bg-slate-50 border-slate-200 text-slate-800"
               />
             </div>
           </div>
@@ -115,7 +115,7 @@ export default function StandardFormDialog({ standard, onSaved, onClose }) {
                 value={form.standard_reference}
                 onChange={(e) => handleChange("standard_reference", e.target.value)}
                 placeholder='ת"י 118'
-                className="h-9 sm:h-10 text-xs sm:text-sm bg-[#0d1320] border-[#1e293b] text-slate-200 placeholder:text-slate-600"
+                className="h-9 sm:h-10 text-xs sm:text-sm bg-slate-50 border-slate-200 text-slate-800 placeholder:text-slate-400"
               />
             </div>
             <div className="space-y-1.5">
@@ -124,7 +124,7 @@ export default function StandardFormDialog({ standard, onSaved, onClose }) {
                 type="number"
                 value={form.waste_factor}
                 onChange={(e) => handleChange("waste_factor", e.target.value)}
-                className="h-9 sm:h-10 text-xs sm:text-sm bg-[#0d1320] border-[#1e293b] text-slate-200"
+                className="h-9 sm:h-10 text-xs sm:text-sm bg-slate-50 border-slate-200 text-slate-800"
               />
             </div>
           </div>
@@ -135,7 +135,7 @@ export default function StandardFormDialog({ standard, onSaved, onClose }) {
               value={form.description}
               onChange={(e) => handleChange("description", e.target.value)}
               rows={2}
-              className="text-xs sm:text-sm bg-[#0d1320] border-[#1e293b] text-slate-200"
+              className="text-xs sm:text-sm bg-slate-50 border-slate-200 text-slate-800"
             />
           </div>
 
@@ -146,7 +146,7 @@ export default function StandardFormDialog({ standard, onSaved, onClose }) {
               onChange={(e) => handleChange("custom_notes", e.target.value)}
               placeholder="לדוגמה: להשתמש בבטון B30 במקום B25, להוסיף 5% תוספת לחוזק..."
               rows={2}
-              className="text-xs sm:text-sm bg-[#0d1320] border-[#1e293b] text-slate-200 placeholder:text-slate-600"
+              className="text-xs sm:text-sm bg-slate-50 border-slate-200 text-slate-800 placeholder:text-slate-400"
             />
           </div>
 
@@ -154,11 +154,11 @@ export default function StandardFormDialog({ standard, onSaved, onClose }) {
             <button
               onClick={handleSave}
               disabled={saving || !form.section_name_he || !form.standard_reference}
-              className="flex-1 btn-eng-primary h-10 sm:h-11 text-sm font-bold disabled:opacity-50"
+              className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 text-sm rounded-md transition-all h-10 sm:h-11 text-sm font-bold disabled:opacity-50"
             >
               {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : isEdit ? "עדכן" : "הוסף"}
             </button>
-            <Button variant="outline" onClick={onClose} className="h-10 sm:h-11 text-sm bg-[#1e293b] border-[#334155] text-slate-300 hover:bg-[#334155]">
+            <Button variant="outline" onClick={onClose} className="h-10 sm:h-11 text-sm bg-slate-100 border-slate-300 text-slate-700 hover:bg-slate-200">
               ביטול
             </Button>
           </div>

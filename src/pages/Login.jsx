@@ -39,7 +39,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0a0f1a] eng-blueprint-bg" dir="rtl">
+    <div className="min-h-screen flex items-center justify-center bg-white eng-blueprint-bg" dir="rtl">
       {/* Ambient glow */}
       <div className="fixed top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-amber-500/[0.03] rounded-full blur-[120px] pointer-events-none" />
 
@@ -59,8 +59,8 @@ export default function Login() {
           >
             <Hexagon className="w-8 h-8 text-[#0a0f1a]" strokeWidth={2.5} />
           </motion.div>
-          <h1 className="text-3xl font-bold text-slate-100 tracking-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>
-            BOQ<span className="text-amber-400">Pro</span>
+          <h1 className="text-3xl font-bold text-slate-900 tracking-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>
+            BOQ<span className="text-amber-600">Pro</span>
           </h1>
           <p className="text-xs text-slate-500 mt-1 tracking-widest uppercase" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
             {isRegister ? 'CREATE ACCOUNT' : 'ENGINEERING LOGIN'}
@@ -83,7 +83,7 @@ export default function Login() {
                 placeholder="user@example.com"
                 required
                 dir="ltr"
-                className="h-11 bg-[#0d1320] border-[#1e293b] text-slate-200 rounded placeholder:text-slate-600 focus:border-amber-500/50 focus:ring-amber-500/10"
+                className="h-11 bg-slate-50 border-slate-200 text-slate-800 rounded placeholder:text-slate-400 focus:border-blue-400 focus:ring-blue-500/20"
               />
             </div>
 
@@ -102,7 +102,7 @@ export default function Login() {
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="Username"
                   dir="ltr"
-                  className="h-11 bg-[#0d1320] border-[#1e293b] text-slate-200 rounded placeholder:text-slate-600"
+                  className="h-11 bg-slate-50 border-slate-200 text-slate-800 rounded placeholder:text-slate-400"
                 />
               </motion.div>
             )}
@@ -117,7 +117,7 @@ export default function Login() {
                 placeholder="••••••••"
                 required
                 dir="ltr"
-                className="h-11 bg-[#0d1320] border-[#1e293b] text-slate-200 rounded placeholder:text-slate-600"
+                className="h-11 bg-slate-50 border-slate-200 text-slate-800 rounded placeholder:text-slate-400"
               />
             </div>
 
@@ -125,7 +125,7 @@ export default function Login() {
               <motion.p
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="text-sm text-rose-400 bg-rose-500/10 border border-rose-500/20 p-3 rounded"
+                className="text-sm text-rose-600 bg-rose-50 border border-rose-500/20 p-3 rounded"
               >
                 {error}
               </motion.p>
@@ -134,7 +134,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={loading}
-              className="btn-eng-primary w-full h-11 flex items-center justify-center gap-2 disabled:opacity-50"
+              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 text-sm rounded-md transition-all w-full h-11 flex items-center justify-center gap-2 disabled:opacity-50"
             >
               {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
               {loading ? 'מתחבר...' : isRegister ? 'הרשמה' : 'התחברות'}
@@ -143,14 +143,14 @@ export default function Login() {
 
           {/* Divider */}
           <div className="flex items-center gap-3 my-6">
-            <div className="flex-1 h-px bg-[#1e293b]" />
+            <div className="flex-1 h-px bg-slate-100" />
             <span className="text-[10px] text-slate-600 uppercase tracking-widest" style={{ fontFamily: "'JetBrains Mono', monospace" }}>או</span>
-            <div className="flex-1 h-px bg-[#1e293b]" />
+            <div className="flex-1 h-px bg-slate-100" />
           </div>
 
           <button
             type="button"
-            className="w-full text-sm text-slate-400 hover:text-amber-400 transition-colors py-2"
+            className="w-full text-sm text-slate-400 hover:text-amber-600 transition-colors py-2"
             onClick={() => { setIsRegister(!isRegister); setError(''); }}
           >
             {isRegister ? 'יש לך חשבון? התחבר' : 'אין לך חשבון? הירשם'}

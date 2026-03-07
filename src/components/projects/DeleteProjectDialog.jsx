@@ -30,9 +30,9 @@ export default function DeleteProjectDialog({ project, open, onClose, onDeleted 
 
   return (
     <AlertDialog open={open} onOpenChange={(v) => { if (!v && !deleting) onClose(); }}>
-      <AlertDialogContent dir="rtl" className="mx-3 sm:mx-auto bg-[#111827] border-[#1e293b]">
+      <AlertDialogContent dir="rtl" className="mx-3 sm:mx-auto bg-white border-slate-200">
         <AlertDialogHeader>
-          <AlertDialogTitle className="text-slate-100">מחיקת פרויקט</AlertDialogTitle>
+          <AlertDialogTitle className="text-slate-900">מחיקת פרויקט</AlertDialogTitle>
           <AlertDialogDescription className="text-slate-400">
             האם אתה בטוח שברצונך למחוק את הפרויקט "{project.name}"?
             <br />
@@ -40,7 +40,7 @@ export default function DeleteProjectDialog({ project, open, onClose, onDeleted 
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="flex gap-2 sm:gap-3">
-          <AlertDialogCancel disabled={deleting} className="bg-[#1e293b] border-[#334155] text-slate-300 hover:bg-[#334155]">ביטול</AlertDialogCancel>
+          <AlertDialogCancel disabled={deleting} className="bg-slate-100 border-slate-300 text-slate-700 hover:bg-slate-200">ביטול</AlertDialogCancel>
           <Button
             onClick={handleDelete}
             disabled={deleting}

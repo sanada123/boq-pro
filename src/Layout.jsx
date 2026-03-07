@@ -14,7 +14,7 @@ export default function Layout({ children, currentPageName }) {
   ];
 
   return (
-    <div dir="rtl" className="min-h-screen bg-[#0a0f1a] eng-grid-bg">
+    <div dir="rtl" className="min-h-screen bg-white">
       {/* Top Navigation Bar */}
       <header className="eng-header-bar sticky top-0 z-50 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -28,8 +28,8 @@ export default function Layout({ children, currentPageName }) {
                 </div>
               </div>
               <div>
-                <h1 className="text-base sm:text-lg font-bold text-slate-100 tracking-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>
-                  BOQ<span className="text-amber-400">Pro</span>
+                <h1 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>
+                  BOQ<span className="text-amber-600">Pro</span>
                 </h1>
                 <p className="text-[10px] text-slate-500 -mt-0.5 tracking-wide" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                   QUANTITY TAKEOFF
@@ -47,14 +47,14 @@ export default function Layout({ children, currentPageName }) {
                     to={createPageUrl(item.page)}
                     className={`relative flex items-center gap-2 px-4 py-2 text-sm rounded transition-all ${
                       isActive
-                        ? "text-amber-400 font-semibold"
-                        : "text-slate-400 hover:text-slate-200"
+                        ? "text-amber-600 font-semibold"
+                        : "text-slate-400 hover:text-slate-800"
                     }`}
                   >
                     {isActive && (
                       <motion.div
                         layoutId="nav-indicator"
-                        className="absolute inset-0 bg-amber-500/10 border border-amber-500/20 rounded"
+                        className="absolute inset-0 bg-amber-50 border border-amber-200 rounded"
                         transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
                       />
                     )}
@@ -68,7 +68,7 @@ export default function Layout({ children, currentPageName }) {
             {/* Mobile hamburger */}
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="sm:hidden p-2 rounded text-slate-400 hover:text-slate-200 hover:bg-white/5 transition-colors"
+              className="sm:hidden p-2 rounded text-slate-400 hover:text-slate-800 hover:bg-white/5 transition-colors"
             >
               {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -86,7 +86,7 @@ export default function Layout({ children, currentPageName }) {
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="sm:hidden overflow-hidden bg-[#0d1320] border-t border-[#1e293b]"
+              className="sm:hidden overflow-hidden bg-slate-50 border-t border-slate-200"
             >
               <div className="px-4 py-3 space-y-1">
                 {navItems.map(item => (
@@ -96,8 +96,8 @@ export default function Layout({ children, currentPageName }) {
                     onClick={() => setMenuOpen(false)}
                     className={`flex items-center gap-3 px-3 py-2.5 rounded text-sm transition-all ${
                       currentPageName === item.page
-                        ? "bg-amber-500/10 text-amber-400 font-semibold"
-                        : "text-slate-400 hover:text-slate-200"
+                        ? "bg-amber-50 text-amber-600 font-semibold"
+                        : "text-slate-400 hover:text-slate-800"
                     }`}
                   >
                     <item.icon className="w-4 h-4" />

@@ -56,9 +56,9 @@ export default function FormulaFormDialog({ formula, onSaved, onClose }) {
 
   return (
     <Dialog open onOpenChange={onClose}>
-      <DialogContent className="max-w-lg mx-3 sm:mx-auto bg-[#111827] border-[#1e293b]" dir="rtl">
+      <DialogContent className="max-w-lg mx-3 sm:mx-auto bg-white border-slate-200" dir="rtl">
         <DialogHeader>
-          <DialogTitle className="text-base sm:text-lg text-slate-100">
+          <DialogTitle className="text-base sm:text-lg text-slate-900">
             {isEdit ? "עריכת נוסחה" : "הוספת נוסחה"}
           </DialogTitle>
         </DialogHeader>
@@ -67,47 +67,47 @@ export default function FormulaFormDialog({ formula, onSaved, onClose }) {
             <div className="space-y-1.5">
               <Label className="text-xs sm:text-sm text-slate-400">סעיף</Label>
               <Select value={form.section} onValueChange={(v) => handleChange("section", v)}>
-                <SelectTrigger className="h-9 text-xs sm:text-sm bg-[#0d1320] border-[#1e293b] text-slate-200"><SelectValue /></SelectTrigger>
-                <SelectContent className="bg-[#1e293b] border-[#334155]">
+                <SelectTrigger className="h-9 text-xs sm:text-sm bg-slate-50 border-slate-200 text-slate-800"><SelectValue /></SelectTrigger>
+                <SelectContent className="bg-slate-100 border-slate-300">
                   {SECTIONS.map((s) => (
-                    <SelectItem key={s.value} value={s.value} className="text-slate-200 focus:bg-amber-500/10 focus:text-amber-400">{s.label}</SelectItem>
+                    <SelectItem key={s.value} value={s.value} className="text-slate-800 focus:bg-amber-50 focus:text-blue-600">{s.label}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
             <div className="space-y-1.5">
               <Label className="text-xs sm:text-sm text-slate-400">פחת (%)</Label>
-              <Input type="number" value={form.waste_factor} onChange={(e) => handleChange("waste_factor", e.target.value)} className="h-9 text-xs sm:text-sm bg-[#0d1320] border-[#1e293b] text-slate-200" />
+              <Input type="number" value={form.waste_factor} onChange={(e) => handleChange("waste_factor", e.target.value)} className="h-9 text-xs sm:text-sm bg-slate-50 border-slate-200 text-slate-800" />
             </div>
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
               <Label className="text-xs sm:text-sm text-slate-400">מזהה (EN)</Label>
-              <Input value={form.element_type} onChange={(e) => handleChange("element_type", e.target.value)} className="h-9 text-xs sm:text-sm bg-[#0d1320] border-[#1e293b] text-slate-200 placeholder:text-slate-600" placeholder="strip_foundations" />
+              <Input value={form.element_type} onChange={(e) => handleChange("element_type", e.target.value)} className="h-9 text-xs sm:text-sm bg-slate-50 border-slate-200 text-slate-800 placeholder:text-slate-400" placeholder="strip_foundations" />
             </div>
             <div className="space-y-1.5">
               <Label className="text-xs sm:text-sm text-slate-400">שם בעברית</Label>
-              <Input value={form.element_name_he} onChange={(e) => handleChange("element_name_he", e.target.value)} className="h-9 text-xs sm:text-sm bg-[#0d1320] border-[#1e293b] text-slate-200 placeholder:text-slate-600" placeholder="יסודות רצועה" />
+              <Input value={form.element_name_he} onChange={(e) => handleChange("element_name_he", e.target.value)} className="h-9 text-xs sm:text-sm bg-slate-50 border-slate-200 text-slate-800 placeholder:text-slate-400" placeholder="יסודות רצועה" />
             </div>
           </div>
           <div className="space-y-1.5">
             <Label className="text-xs sm:text-sm text-slate-400">נוסחה</Label>
-            <Input value={form.formula} onChange={(e) => handleChange("formula", e.target.value)} className="h-9 text-xs sm:text-sm eng-mono bg-[#0d1320] border-[#1e293b] text-amber-400 placeholder:text-slate-600" dir="ltr" placeholder="perimeter × 0.4 × 0.8" />
+            <Input value={form.formula} onChange={(e) => handleChange("formula", e.target.value)} className="h-9 text-xs sm:text-sm eng-mono bg-slate-50 border-slate-200 text-amber-600 placeholder:text-slate-400" dir="ltr" placeholder="perimeter × 0.4 × 0.8" />
           </div>
           <div className="space-y-1.5">
             <Label className="text-xs sm:text-sm text-slate-400">הסבר הנוסחה</Label>
-            <Textarea value={form.formula_description_he} onChange={(e) => handleChange("formula_description_he", e.target.value)} rows={2} className="text-xs sm:text-sm bg-[#0d1320] border-[#1e293b] text-slate-200 placeholder:text-slate-600" placeholder="היקף הבניין × רוחב היסוד × עומק היסוד" />
+            <Textarea value={form.formula_description_he} onChange={(e) => handleChange("formula_description_he", e.target.value)} rows={2} className="text-xs sm:text-sm bg-slate-50 border-slate-200 text-slate-800 placeholder:text-slate-400" placeholder="היקף הבניין × רוחב היסוד × עומק היסוד" />
           </div>
           <div className="space-y-1.5">
             <Label className="text-xs sm:text-sm text-slate-400">ערכי ברירת מחדל</Label>
-            <Input value={form.default_values} onChange={(e) => handleChange("default_values", e.target.value)} className="h-9 text-xs sm:text-sm bg-[#0d1320] border-[#1e293b] text-slate-200 placeholder:text-slate-600" placeholder="רוחב=0.4מ׳, עומק=0.8מ׳" />
+            <Input value={form.default_values} onChange={(e) => handleChange("default_values", e.target.value)} className="h-9 text-xs sm:text-sm bg-slate-50 border-slate-200 text-slate-800 placeholder:text-slate-400" placeholder="רוחב=0.4מ׳, עומק=0.8מ׳" />
           </div>
           <div className="flex gap-2 pt-2">
             <button onClick={handleSave} disabled={saving || !form.element_name_he || !form.formula}
-              className="flex-1 btn-eng-primary h-10 text-sm font-bold disabled:opacity-50">
+              className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 text-sm rounded-md transition-all h-10 text-sm font-bold disabled:opacity-50">
               {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : isEdit ? "עדכן" : "הוסף"}
             </button>
-            <Button variant="outline" onClick={onClose} className="h-10 text-sm bg-[#1e293b] border-[#334155] text-slate-300 hover:bg-[#334155]">ביטול</Button>
+            <Button variant="outline" onClick={onClose} className="h-10 text-sm bg-slate-100 border-slate-300 text-slate-700 hover:bg-slate-200">ביטול</Button>
           </div>
         </div>
       </DialogContent>

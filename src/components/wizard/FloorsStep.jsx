@@ -36,11 +36,11 @@ export default function FloorsStep({ floors, setFloors }) {
     <div className="space-y-5">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-bold text-slate-100 mb-1">קומות</h2>
+          <h2 className="text-lg font-bold text-slate-900 mb-1">קומות</h2>
           <p className="text-sm text-slate-500">הגדר את הקומות בפרויקט</p>
         </div>
         {floors.length === 0 && (
-          <Button variant="outline" onClick={loadPreset} className="gap-1.5 text-xs bg-[#1e293b] border-[#334155] text-slate-300 hover:bg-[#334155]">
+          <Button variant="outline" onClick={loadPreset} className="gap-1.5 text-xs bg-slate-100 border-slate-300 text-slate-700 hover:bg-slate-200">
             <Copy className="w-3.5 h-3.5" />
             טען תבנית
           </Button>
@@ -54,21 +54,21 @@ export default function FloorsStep({ floors, setFloors }) {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
-            className="bg-[#0d1320] rounded border border-[#1e293b] p-4"
+            className="bg-slate-50 rounded border border-slate-200 p-4"
           >
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 bg-[#111827] rounded flex items-center justify-center shrink-0 border border-[#1e293b]">
+              <div className="w-9 h-9 bg-white rounded flex items-center justify-center shrink-0 border border-slate-200">
                 <Building2 className="w-4 h-4 text-slate-500" />
               </div>
               <div className="flex-1 min-w-0">
                 <Input
                   value={floor.label}
                   onChange={(e) => updateFloor(idx, "label", e.target.value)}
-                  className="h-9 text-sm font-semibold bg-[#111827] border-[#1e293b] text-slate-200"
+                  className="h-9 text-sm font-semibold bg-white border-slate-200 text-slate-800"
                   placeholder="שם הקומה"
                 />
               </div>
-              <Button size="icon" variant="ghost" onClick={() => removeFloor(idx)} className="h-8 w-8 text-slate-600 hover:text-rose-400 hover:bg-rose-500/10 shrink-0">
+              <Button size="icon" variant="ghost" onClick={() => removeFloor(idx)} className="h-8 w-8 text-slate-600 hover:text-rose-600 hover:bg-rose-50 shrink-0">
                 <X className="w-4 h-4" />
               </Button>
             </div>
@@ -90,7 +90,7 @@ export default function FloorsStep({ floors, setFloors }) {
                     max={50}
                     value={floor.typical_count}
                     onChange={(e) => updateFloor(idx, "typical_count", Number(e.target.value))}
-                    className="w-16 h-7 text-xs text-center bg-[#111827] border-[#1e293b] text-slate-200"
+                    className="w-16 h-7 text-xs text-center bg-white border-slate-200 text-slate-800"
                   />
                   <span className="text-xs text-slate-500">פעמים</span>
                 </div>
@@ -100,14 +100,14 @@ export default function FloorsStep({ floors, setFloors }) {
         ))}
       </AnimatePresence>
 
-      <Button onClick={addFloor} variant="outline" className="w-full h-10 gap-2 text-sm border-dashed border-[#334155] text-slate-400 hover:border-amber-500/40 hover:bg-amber-500/5 hover:text-amber-400 bg-transparent">
+      <Button onClick={addFloor} variant="outline" className="w-full h-10 gap-2 text-sm border-dashed border-slate-300 text-slate-400 hover:border-amber-300 hover:bg-amber-50 hover:text-amber-600 bg-transparent">
         <Plus className="w-4 h-4" />
         הוסף קומה
       </Button>
 
       {floors.length > 0 && (
-        <div className="bg-cyan-500/10 border border-cyan-500/20 rounded p-3">
-          <p className="text-xs text-cyan-400">
+        <div className="bg-blue-50 border border-blue-200 rounded p-3">
+          <p className="text-xs text-blue-600">
             <strong>סה"כ:</strong>{" "}
             <span className="eng-number">{floors.reduce((sum, f) => sum + (f.is_typical ? (f.typical_count || 1) : 1), 0)}</span> קומות
             {floors.some(f => f.is_typical) && (

@@ -47,10 +47,10 @@ export default function UnclearItemsDialog({ open, onClose, unclearItems, skippe
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-lg sm:max-w-2xl max-h-[85vh] overflow-y-auto bg-[#111827] border-[#1e293b]" dir="rtl">
+      <DialogContent className="max-w-lg sm:max-w-2xl max-h-[85vh] overflow-y-auto bg-white border-slate-200" dir="rtl">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-base sm:text-lg text-slate-100">
-            <AlertTriangle className="w-5 h-5 text-amber-400" />
+          <DialogTitle className="flex items-center gap-2 text-base sm:text-lg text-slate-900">
+            <AlertTriangle className="w-5 h-5 text-amber-600" />
             פריטים שדורשים הבהרה
           </DialogTitle>
         </DialogHeader>
@@ -66,13 +66,13 @@ export default function UnclearItemsDialog({ open, onClose, unclearItems, skippe
               key={issue.id}
               className={`rounded border p-4 ${
                 issue.type === "unclear"
-                  ? "border-amber-500/25 bg-amber-500/5"
-                  : "border-[#1e293b] bg-[#0d1320]"
+                  ? "border-amber-200 bg-amber-50"
+                  : "border-slate-200 bg-slate-50"
               }`}
             >
               <div className="flex items-start gap-2 mb-2">
                 {issue.type === "unclear" ? (
-                  <AlertTriangle className="w-3.5 h-3.5 text-amber-400 mt-0.5 shrink-0" />
+                  <AlertTriangle className="w-3.5 h-3.5 text-amber-600 mt-0.5 shrink-0" />
                 ) : (
                   <MessageCircle className="w-3.5 h-3.5 text-slate-500 mt-0.5 shrink-0" />
                 )}
@@ -80,7 +80,7 @@ export default function UnclearItemsDialog({ open, onClose, unclearItems, skippe
                   <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
                     {issue.type === "unclear" ? "לא ברור" : "דולג"}
                   </span>
-                  <p className="text-sm text-slate-300 mt-0.5">{issue.text}</p>
+                  <p className="text-sm text-slate-700 mt-0.5">{issue.text}</p>
                 </div>
               </div>
               <Textarea
@@ -89,20 +89,20 @@ export default function UnclearItemsDialog({ open, onClose, unclearItems, skippe
                 onChange={(e) =>
                   setClarifications({ ...clarifications, [issue.id]: e.target.value })
                 }
-                className="text-sm min-h-[60px] mt-1 bg-[#0d1320] border-[#1e293b] text-slate-200 placeholder:text-slate-600"
+                className="text-sm min-h-[60px] mt-1 bg-slate-50 border-slate-200 text-slate-800 placeholder:text-slate-400"
               />
             </div>
           ))}
         </div>
 
         <DialogFooter className="flex gap-2 mt-4">
-          <Button variant="outline" onClick={handleSkip} className="text-sm bg-[#1e293b] border-[#334155] text-slate-300 hover:bg-[#334155]">
+          <Button variant="outline" onClick={handleSkip} className="text-sm bg-slate-100 border-slate-300 text-slate-700 hover:bg-slate-200">
             דלג — המשך בלי הבהרות
           </Button>
           <button
             onClick={handleSubmit}
             disabled={submitting || Object.values(clarifications).every((v) => !v?.trim())}
-            className="btn-eng-primary h-10 px-4 text-sm font-semibold gap-1.5 flex items-center disabled:opacity-50"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 text-sm rounded-md transition-all h-10 px-4 text-sm font-semibold gap-1.5 flex items-center disabled:opacity-50"
           >
             <CheckCircle2 className="w-3.5 h-3.5" />
             {submitting ? "מעדכן..." : "שלח הבהרות ועדכן"}

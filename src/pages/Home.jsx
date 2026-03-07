@@ -437,16 +437,16 @@ export default function Home() {
           {analysisError ? (
             <div className="eng-card p-6 text-center space-y-4">
               <div className="h-0.5 bg-gradient-to-l from-transparent via-rose-500/40 to-transparent -mt-6 mb-6 -mx-6" />
-              <div className="w-12 h-12 bg-rose-500/10 border border-rose-500/20 rounded-lg flex items-center justify-center mx-auto">
-                <Shield className="w-6 h-6 text-rose-400" />
+              <div className="w-12 h-12 bg-rose-50 border border-rose-500/20 rounded-lg flex items-center justify-center mx-auto">
+                <Shield className="w-6 h-6 text-rose-600" />
               </div>
-              <h3 className="text-lg font-bold text-slate-100">שגיאה בניתוח</h3>
+              <h3 className="text-lg font-bold text-slate-900">שגיאה בניתוח</h3>
               <p className="text-sm text-slate-400">{analysisError}</p>
               <div className="flex gap-2 justify-center pt-2">
-                <button onClick={() => { setAnalysisError(null); setStep("wizard"); setWizardStep(3); }} className="btn-eng-secondary h-9 text-sm px-4">
+                <button onClick={() => { setAnalysisError(null); setStep("wizard"); setWizardStep(3); }} className="bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-5 py-2.5 text-sm rounded-md border border-slate-200 transition-all h-9 text-sm px-4">
                   חזור לאשף
                 </button>
-                <button onClick={() => { setAnalysisError(null); handleStartAnalysis(); }} className="btn-eng-primary h-9 text-sm px-5">
+                <button onClick={() => { setAnalysisError(null); handleStartAnalysis(); }} className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 text-sm rounded-md transition-all h-9 text-sm px-5">
                   נסה שוב
                 </button>
               </div>
@@ -482,13 +482,13 @@ export default function Home() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.1, type: "spring" }}
-            className="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 rounded-full px-4 py-1.5 mb-4"
+            className="inline-flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-full px-4 py-1.5 mb-4"
           >
             <span className="status-dot status-dot-active" />
-            <span className="text-xs text-amber-400 font-medium" style={{ fontFamily: "'JetBrains Mono', monospace" }}>AI-POWERED</span>
+            <span className="text-xs text-amber-600 font-medium" style={{ fontFamily: "'JetBrains Mono', monospace" }}>AI-POWERED</span>
           </motion.div>
-          <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-100 tracking-tight leading-tight">
-            כתב כמויות<span className="text-amber-400"> אוטומטי</span>
+          <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
+            כתב כמויות<span className="text-amber-600"> אוטומטי</span>
           </h1>
           <p className="text-base sm:text-lg text-slate-400 mt-3 max-w-lg mx-auto">
             העלה תכניות וקבל כתב כמויות מלא — קונסטרוקציה וגמרים
@@ -498,17 +498,17 @@ export default function Home() {
         {/* Features */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
-            { icon: Ruler, title: "קונסטרוקציה", desc: "בטון, ברזל, תבניות", color: "text-cyan-400", bg: "bg-cyan-500/10 border-cyan-500/20" },
-            { icon: Layers, title: "גמרים", desc: "טיח, צבע, ריצוף, חלונות", color: "text-amber-400", bg: "bg-amber-500/10 border-amber-500/20" },
-            { icon: Building2, title: "מרובה קומות", desc: "תמיכה בקומות טיפוסיות", color: "text-emerald-400", bg: "bg-emerald-500/10 border-emerald-500/20" },
+            { icon: Ruler, title: "קונסטרוקציה", desc: "בטון, ברזל, תבניות", color: "text-blue-600", bg: "bg-blue-50 border-blue-200" },
+            { icon: Layers, title: "גמרים", desc: "טיח, צבע, ריצוף, חלונות", color: "text-amber-600", bg: "bg-amber-50 border-amber-200" },
+            { icon: Building2, title: "מרובה קומות", desc: "תמיכה בקומות טיפוסיות", color: "text-emerald-600", bg: "bg-emerald-50 border-emerald-200" },
             { icon: Cpu, title: "AI לומד", desc: "משתפר מתיקונים", color: "text-violet-400", bg: "bg-violet-500/10 border-violet-500/20" },
           ].map((f, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 + i * 0.06 }}
-              className="eng-card p-4 text-center hover:border-[#334155] transition-all group">
+              className="eng-card p-4 text-center hover:border-slate-300 transition-all group">
               <div className={`w-10 h-10 ${f.bg} border rounded-lg flex items-center justify-center mx-auto mb-2.5`}>
                 <f.icon className={`w-5 h-5 ${f.color}`} />
               </div>
-              <h3 className="font-semibold text-slate-200 text-sm">{f.title}</h3>
+              <h3 className="font-semibold text-slate-800 text-sm">{f.title}</h3>
               <p className="text-[11px] text-slate-500 mt-0.5">{f.desc}</p>
             </motion.div>
           ))}
@@ -517,19 +517,19 @@ export default function Home() {
         {/* Pending projects */}
         {pendingProjects?.length > 0 && (
           <div className="eng-card border-r-2 border-r-amber-500 p-4">
-            <h3 className="text-sm font-bold text-amber-400 mb-3 flex items-center gap-2">
+            <h3 className="text-sm font-bold text-amber-600 mb-3 flex items-center gap-2">
               <span className="status-dot status-dot-active" />
               ממתינים לסקירה
             </h3>
             <div className="space-y-2">
               {pendingProjects.map(p => (
                 <button key={p.id} onClick={() => resumeProject(p.id)}
-                  className="w-full flex items-center justify-between bg-[#0d1320] rounded border border-[#1e293b] p-3 hover:border-amber-500/30 transition-all text-right group">
+                  className="w-full flex items-center justify-between bg-slate-50 rounded border border-slate-200 p-3 hover:border-amber-200 transition-all text-right group">
                   <div className="flex items-center gap-3">
                     <Building2 className="w-4 h-4 text-amber-500/60" />
-                    <span className="text-sm font-semibold text-slate-300">{p.name}</span>
+                    <span className="text-sm font-semibold text-slate-700">{p.name}</span>
                   </div>
-                  <div className="flex items-center gap-1.5 text-amber-400 opacity-60 group-hover:opacity-100 transition-opacity">
+                  <div className="flex items-center gap-1.5 text-amber-600 opacity-60 group-hover:opacity-100 transition-opacity">
                     <span className="text-xs font-medium">המשך סקירה</span>
                     <ArrowLeft className="w-4 h-4" />
                   </div>
@@ -545,27 +545,27 @@ export default function Home() {
           <div className="h-0.5 bg-gradient-to-l from-transparent via-amber-500/40 to-transparent" />
 
           {/* Wizard Progress */}
-          <div className="flex items-center border-b border-[#1e293b] px-5 py-3 gap-1 overflow-x-auto">
+          <div className="flex items-center border-b border-slate-200 px-5 py-3 gap-1 overflow-x-auto">
             {WIZARD_STEPS.map((ws, i) => (
               <React.Fragment key={ws.key}>
                 <button
                   onClick={() => i < wizardStep && setWizardStep(i)}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium whitespace-nowrap transition-all ${
                     i === wizardStep
-                      ? "bg-amber-500/15 text-amber-400 border border-amber-500/25"
+                      ? "bg-amber-50 text-amber-600 border border-amber-200"
                       : i < wizardStep
-                      ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 cursor-pointer hover:bg-emerald-500/15"
+                      ? "bg-emerald-50 text-emerald-600 border border-emerald-200 cursor-pointer hover:bg-emerald-500/15"
                       : "text-slate-600 border border-transparent"
                   }`}
                 >
                   <span className={`w-5 h-5 rounded flex items-center justify-center text-[10px] font-bold ${
-                    i < wizardStep ? "bg-emerald-500/20 text-emerald-400" : i === wizardStep ? "bg-amber-500/20 text-amber-400" : "bg-[#1e293b] text-slate-500"
+                    i < wizardStep ? "bg-emerald-500/20 text-emerald-600" : i === wizardStep ? "bg-amber-500/20 text-amber-600" : "bg-slate-100 text-slate-500"
                   }`}>
                     {i < wizardStep ? <Check className="w-3 h-3" /> : i + 1}
                   </span>
                   {ws.label}
                 </button>
-                {i < WIZARD_STEPS.length - 1 && <div className="w-6 h-px bg-[#1e293b] shrink-0" />}
+                {i < WIZARD_STEPS.length - 1 && <div className="w-6 h-px bg-slate-100 shrink-0" />}
               </React.Fragment>
             ))}
           </div>
@@ -575,7 +575,7 @@ export default function Home() {
             {wizardStep === 0 && (
               <div className="space-y-5">
                 <div>
-                  <h2 className="text-lg font-bold text-slate-100 mb-1">פרטי פרויקט</h2>
+                  <h2 className="text-lg font-bold text-slate-900 mb-1">פרטי פרויקט</h2>
                   <p className="text-sm text-slate-500">שם הפרויקט ישמש לזיהוי בדוחות</p>
                 </div>
                 <div className="space-y-1.5">
@@ -584,7 +584,7 @@ export default function Home() {
                     placeholder='לדוגמה: "בניין מגורים ברח׳ הרצל 15"'
                     value={projectName}
                     onChange={(e) => setProjectName(e.target.value)}
-                    className="h-11 text-sm bg-[#0d1320] border-[#1e293b] text-slate-200 rounded placeholder:text-slate-600"
+                    className="h-11 text-sm bg-slate-50 border-slate-200 text-slate-800 rounded placeholder:text-slate-400"
                   />
                 </div>
                 <div className="space-y-1.5">
@@ -594,7 +594,7 @@ export default function Home() {
                     value={projectDescription}
                     onChange={(e) => setProjectDescription(e.target.value)}
                     rows={2}
-                    className="text-sm bg-[#0d1320] border-[#1e293b] text-slate-200 rounded placeholder:text-slate-600"
+                    className="text-sm bg-slate-50 border-slate-200 text-slate-800 rounded placeholder:text-slate-400"
                   />
                 </div>
               </div>
@@ -614,11 +614,11 @@ export default function Home() {
           </div>
 
           {/* Navigation */}
-          <div className="flex items-center justify-between px-5 py-4 border-t border-[#1e293b] bg-[#0d1320]/50">
+          <div className="flex items-center justify-between px-5 py-4 border-t border-slate-200 bg-slate-50/50">
             <button
               onClick={() => setWizardStep(Math.max(0, wizardStep - 1))}
               disabled={wizardStep === 0}
-              className="btn-eng-secondary gap-1.5 text-sm h-10 px-4 flex items-center disabled:opacity-30"
+              className="bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-5 py-2.5 text-sm rounded-md border border-slate-200 transition-all gap-1.5 text-sm h-10 px-4 flex items-center disabled:opacity-30"
             >
               <ArrowRight className="w-4 h-4" />
               חזרה
@@ -628,7 +628,7 @@ export default function Home() {
               <button
                 onClick={() => setWizardStep(wizardStep + 1)}
                 disabled={!canGoNext()}
-                className="btn-eng-primary gap-1.5 text-sm h-10 px-5 flex items-center disabled:opacity-30"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 text-sm rounded-md transition-all gap-1.5 text-sm h-10 px-5 flex items-center disabled:opacity-30"
               >
                 הבא
                 <ArrowLeft className="w-4 h-4" />
@@ -637,7 +637,7 @@ export default function Home() {
               <button
                 onClick={handleStartAnalysis}
                 disabled={!canGoNext() || isSubmitting}
-                className="btn-eng-primary gap-2 text-sm h-10 px-6 flex items-center font-semibold disabled:opacity-30"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 text-sm rounded-md transition-all gap-2 text-sm h-10 px-6 flex items-center font-semibold disabled:opacity-30"
               >
                 {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Hexagon className="w-4 h-4" />}
                 התחל ניתוח
