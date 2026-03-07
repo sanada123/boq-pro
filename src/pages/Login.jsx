@@ -39,9 +39,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white eng-blueprint-bg" dir="rtl">
-      {/* Ambient glow */}
-      <div className="fixed top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-amber-500/[0.03] rounded-full blur-[120px] pointer-events-none" />
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-50 to-white" dir="rtl">
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -55,9 +53,9 @@ export default function Login() {
             initial={{ scale: 0.8 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2, type: "spring", bounce: 0.3 }}
-            className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-amber-400 to-amber-600 rounded-2xl shadow-lg amber-glow mb-4"
+            className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-amber-400 to-amber-600 rounded-2xl shadow-lg mb-4"
           >
-            <Hexagon className="w-8 h-8 text-[#0a0f1a]" strokeWidth={2.5} />
+            <Hexagon className="w-8 h-8 text-white" strokeWidth={2.5} />
           </motion.div>
           <h1 className="text-3xl font-bold text-slate-900 tracking-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>
             BOQ<span className="text-amber-600">Pro</span>
@@ -68,9 +66,7 @@ export default function Login() {
         </div>
 
         {/* Card */}
-        <div className="eng-card p-6 sm:p-8">
-          {/* Top accent line */}
-          <div className="h-0.5 bg-gradient-to-l from-transparent via-amber-500/40 to-transparent -mt-6 sm:-mt-8 mb-6 sm:mb-8 -mx-6 sm:-mx-8" />
+        <div className="bg-white border border-slate-200 rounded-xl shadow-sm p-6 sm:p-8">
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-1.5">

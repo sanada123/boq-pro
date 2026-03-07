@@ -16,7 +16,7 @@ export default function Layout({ children, currentPageName }) {
   return (
     <div dir="rtl" className="min-h-screen bg-white">
       {/* Top Navigation Bar */}
-      <header className="eng-header-bar sticky top-0 z-50 backdrop-blur-md">
+      <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-between h-14 sm:h-16">
             {/* Logo */}
@@ -24,7 +24,7 @@ export default function Layout({ children, currentPageName }) {
               <div className="relative w-9 h-9">
                 <div className="absolute inset-0 bg-amber-500/20 rounded-lg blur-md group-hover:bg-amber-500/30 transition-all" />
                 <div className="relative w-9 h-9 bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg flex items-center justify-center shadow-lg">
-                  <Hexagon className="w-5 h-5 text-[#0a0f1a]" strokeWidth={2.5} />
+                  <Hexagon className="w-5 h-5 text-white" strokeWidth={2.5} />
                 </div>
               </div>
               <div>

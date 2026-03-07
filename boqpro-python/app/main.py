@@ -106,7 +106,10 @@ if os.path.isdir(dist_path):
         if full_path and os.path.isfile(file_path):
             return FileResponse(file_path)
         # SPA fallback — React Router handles the rest
+        # no-cache ensures browser revalidates index.html on each visit,
+        # so new Vite builds (with fresh hashed asset URLs) are picked up.
         return FileResponse(
             os.path.join(dist_path, "index.html"),
             media_type="text/html",
+            headers={"Cache-Control": "no-cache"},
         )

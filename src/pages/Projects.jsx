@@ -79,7 +79,7 @@ export default function Projects() {
                 transition={{ delay: i * 0.03 }}
               >
                 <Link to={isResumable ? (createPageUrl("Home") + `?resume=${project.id}`) : (createPageUrl("ProjectView") + `?id=${project.id}`)}>
-                  <div className="eng-card-glow group">
+                  <div className="bg-white border border-slate-200 rounded-lg hover:border-slate-300 hover:shadow-sm transition-all group">
                     <div className="flex items-center gap-4 p-4">
                       <div className="w-10 h-10 bg-slate-100 rounded flex items-center justify-center shrink-0 group-hover:bg-amber-50 transition-colors">
                         <Building2 className="w-5 h-5 text-slate-500 group-hover:text-amber-600 transition-colors" />

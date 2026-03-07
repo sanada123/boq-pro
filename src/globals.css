@@ -76,6 +76,13 @@
   }
 }
 
+/* ═══════ Card & Layout ═══════ */
+.eng-card {
+  background: white;
+  border: 1px solid rgb(226 232 240);  /* slate-200 */
+  border-radius: 0.5rem;
+}
+
 /* ═══════ Utility Classes ═══════ */
 .eng-mono {
   font-family: 'JetBrains Mono', monospace;
