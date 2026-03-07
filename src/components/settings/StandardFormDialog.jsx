@@ -76,9 +76,9 @@ export default function StandardFormDialog({ standard, onSaved, onClose }) {
 
   return (
     <Dialog open onOpenChange={onClose}>
-      <DialogContent className="max-w-lg mx-3 sm:mx-auto" dir="rtl">
+      <DialogContent className="max-w-lg mx-3 sm:mx-auto bg-[#111827] border-[#1e293b]" dir="rtl">
         <DialogHeader>
-          <DialogTitle className="text-base sm:text-lg">
+          <DialogTitle className="text-base sm:text-lg text-slate-100">
             {isEdit ? "עריכת סעיף תקן" : "הוספת סעיף תקן"}
           </DialogTitle>
         </DialogHeader>
@@ -86,79 +86,79 @@ export default function StandardFormDialog({ standard, onSaved, onClose }) {
         <div className="space-y-3 sm:space-y-4 mt-2">
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <Label className="text-xs sm:text-sm">סעיף</Label>
+              <Label className="text-xs sm:text-sm text-slate-400">סעיף</Label>
               <Select value={form.section} onValueChange={(v) => handleChange("section", v)}>
-                <SelectTrigger className="h-9 sm:h-10 text-xs sm:text-sm">
+                <SelectTrigger className="h-9 sm:h-10 text-xs sm:text-sm bg-[#0d1320] border-[#1e293b] text-slate-200">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-[#1e293b] border-[#334155]">
                   {SECTIONS.map((s) => (
-                    <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>
+                    <SelectItem key={s.value} value={s.value} className="text-slate-200 focus:bg-amber-500/10 focus:text-amber-400">{s.label}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
             <div className="space-y-1.5">
-              <Label className="text-xs sm:text-sm">שם בעברית</Label>
+              <Label className="text-xs sm:text-sm text-slate-400">שם בעברית</Label>
               <Input
                 value={form.section_name_he}
                 onChange={(e) => handleChange("section_name_he", e.target.value)}
-                className="h-9 sm:h-10 text-xs sm:text-sm"
+                className="h-9 sm:h-10 text-xs sm:text-sm bg-[#0d1320] border-[#1e293b] text-slate-200"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <Label className="text-xs sm:text-sm">תקן (ת״י)</Label>
+              <Label className="text-xs sm:text-sm text-slate-400">תקן (ת״י)</Label>
               <Input
                 value={form.standard_reference}
                 onChange={(e) => handleChange("standard_reference", e.target.value)}
                 placeholder='ת"י 118'
-                className="h-9 sm:h-10 text-xs sm:text-sm"
+                className="h-9 sm:h-10 text-xs sm:text-sm bg-[#0d1320] border-[#1e293b] text-slate-200 placeholder:text-slate-600"
               />
             </div>
             <div className="space-y-1.5">
-              <Label className="text-xs sm:text-sm">אחוז פחת (%)</Label>
+              <Label className="text-xs sm:text-sm text-slate-400">אחוז פחת (%)</Label>
               <Input
                 type="number"
                 value={form.waste_factor}
                 onChange={(e) => handleChange("waste_factor", e.target.value)}
-                className="h-9 sm:h-10 text-xs sm:text-sm"
+                className="h-9 sm:h-10 text-xs sm:text-sm bg-[#0d1320] border-[#1e293b] text-slate-200"
               />
             </div>
           </div>
 
           <div className="space-y-1.5">
-            <Label className="text-xs sm:text-sm">תיאור התקן</Label>
+            <Label className="text-xs sm:text-sm text-slate-400">תיאור התקן</Label>
             <Textarea
               value={form.description}
               onChange={(e) => handleChange("description", e.target.value)}
               rows={2}
-              className="text-xs sm:text-sm"
+              className="text-xs sm:text-sm bg-[#0d1320] border-[#1e293b] text-slate-200"
             />
           </div>
 
           <div className="space-y-1.5">
-            <Label className="text-xs sm:text-sm">הערות מותאמות (הנחיות ל-AI)</Label>
+            <Label className="text-xs sm:text-sm text-slate-400">הערות מותאמות (הנחיות ל-AI)</Label>
             <Textarea
               value={form.custom_notes}
               onChange={(e) => handleChange("custom_notes", e.target.value)}
               placeholder="לדוגמה: להשתמש בבטון B30 במקום B25, להוסיף 5% תוספת לחוזק..."
               rows={2}
-              className="text-xs sm:text-sm"
+              className="text-xs sm:text-sm bg-[#0d1320] border-[#1e293b] text-slate-200 placeholder:text-slate-600"
             />
           </div>
 
           <div className="flex gap-2 pt-2">
-            <Button
+            <button
               onClick={handleSave}
               disabled={saving || !form.section_name_he || !form.standard_reference}
-              className="flex-1 bg-[#1e3a5f] hover:bg-[#2a5a8f] h-10 sm:h-11 text-sm font-bold rounded-xl"
+              className="flex-1 btn-eng-primary h-10 sm:h-11 text-sm font-bold disabled:opacity-50"
             >
               {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : isEdit ? "עדכן" : "הוסף"}
-            </Button>
-            <Button variant="outline" onClick={onClose} className="h-10 sm:h-11 rounded-xl text-sm">
+            </button>
+            <Button variant="outline" onClick={onClose} className="h-10 sm:h-11 text-sm bg-[#1e293b] border-[#334155] text-slate-300 hover:bg-[#334155]">
               ביטול
             </Button>
           </div>

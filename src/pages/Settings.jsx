@@ -75,7 +75,6 @@ export default function Settings() {
   const { data: formulas, isLoading: lf } = useQuery({ queryKey: ["formulas", user?.email], queryFn: () => api.entities.CalculationFormula.filter({ created_by: user.email }), enabled: !!user?.email, initialData: [] });
   const { data: profiles } = useQuery({ queryKey: ["profiles", user?.email], queryFn: () => api.entities.EngineerProfile.filter({ created_by: user.email }), enabled: !!user?.email, initialData: [] });
 
-  // Initialize profile form from loaded data
   React.useEffect(() => {
     if (profiles?.length > 0 && !profileForm) {
       const p = profiles[0];
@@ -119,41 +118,41 @@ export default function Settings() {
   };
 
   if (ls || lp || lf) {
-    return <div className="flex items-center justify-center min-h-[60vh]"><Loader2 className="w-8 h-8 animate-spin text-slate-600" /></div>;
+    return <div className="flex items-center justify-center min-h-[60vh]"><Loader2 className="w-8 h-8 animate-spin text-amber-500" /></div>;
   }
 
   return (
     <div className="max-w-4xl mx-auto space-y-4">
       <div>
-        <h1 className="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2">
-          <Settings2 className="w-5 h-5 text-blue-600" />
+        <h1 className="text-xl sm:text-2xl font-bold text-slate-100 flex items-center gap-2">
+          <Settings2 className="w-5 h-5 text-amber-400" />
           הגדרות
         </h1>
-        <p className="text-sm text-slate-400">תקנים, מחירים ונוסחאות חישוב</p>
+        <p className="text-sm text-slate-500">תקנים, מחירים ונוסחאות חישוב</p>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="w-full grid grid-cols-4 h-10 bg-slate-100 rounded-xl">
-          <TabsTrigger value="standards" className="text-xs data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg">
+        <TabsList className="w-full grid grid-cols-4 h-10 bg-[#111827] border border-[#1e293b] rounded">
+          <TabsTrigger value="standards" className="text-xs text-slate-400 data-[state=active]:bg-amber-500/10 data-[state=active]:text-amber-400 data-[state=active]:border-amber-500/30 rounded">
             תקנים
           </TabsTrigger>
-          <TabsTrigger value="prices" className="text-xs data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg">
+          <TabsTrigger value="prices" className="text-xs text-slate-400 data-[state=active]:bg-amber-500/10 data-[state=active]:text-amber-400 data-[state=active]:border-amber-500/30 rounded">
             מחירון
           </TabsTrigger>
-          <TabsTrigger value="formulas" className="text-xs data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg">
+          <TabsTrigger value="formulas" className="text-xs text-slate-400 data-[state=active]:bg-amber-500/10 data-[state=active]:text-amber-400 data-[state=active]:border-amber-500/30 rounded">
             נוסחאות
           </TabsTrigger>
-          <TabsTrigger value="profile" className="text-xs data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg">
+          <TabsTrigger value="profile" className="text-xs text-slate-400 data-[state=active]:bg-amber-500/10 data-[state=active]:text-amber-400 data-[state=active]:border-amber-500/30 rounded">
             פרופיל
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="standards" className="space-y-3 mt-4">
           <div className="flex justify-end">
-            <Button onClick={() => { setEditingStandard(null); setShowStandardForm(true); }}
-              className="bg-blue-600 hover:bg-blue-700 text-white gap-1.5 h-8 px-3 text-xs rounded-lg">
+            <button onClick={() => { setEditingStandard(null); setShowStandardForm(true); }}
+              className="btn-eng-primary flex items-center gap-1.5 h-8 px-3 text-xs">
               <Plus className="w-3.5 h-3.5" /> הוסף
-            </Button>
+            </button>
           </div>
           {standards.length === 0 ? (
             <EmptyState label="תקנים" code="STANDARDS" onInit={() => initDefaults("standards")} loading={initializing.standards} />
@@ -172,11 +171,11 @@ export default function Settings() {
 
         <TabsContent value="prices" className="space-y-3 mt-4">
           <div className="flex justify-between items-center">
-            <span className="text-xs text-slate-400">מחירי שוק (₪)</span>
-            <Button onClick={() => { setEditingPrice(null); setShowPriceForm(true); }}
-              className="bg-blue-600 hover:bg-blue-700 text-white gap-1.5 h-8 px-3 text-xs rounded-lg">
+            <span className="text-xs text-slate-500">מחירי שוק (₪)</span>
+            <button onClick={() => { setEditingPrice(null); setShowPriceForm(true); }}
+              className="btn-eng-primary flex items-center gap-1.5 h-8 px-3 text-xs">
               <Plus className="w-3.5 h-3.5" /> הוסף
-            </Button>
+            </button>
           </div>
           {prices.length === 0 ? (
             <EmptyState label="מחירון" code="PRICES" onInit={() => initDefaults("prices")} loading={initializing.prices} />
@@ -194,11 +193,11 @@ export default function Settings() {
 
         <TabsContent value="formulas" className="space-y-3 mt-4">
           <div className="flex justify-between items-center">
-            <span className="text-xs text-slate-400">נוסחאות חישוב</span>
-            <Button onClick={() => { setEditingFormula(null); setShowFormulaForm(true); }}
-              className="bg-blue-600 hover:bg-blue-700 text-white gap-1.5 h-8 px-3 text-xs rounded-lg">
+            <span className="text-xs text-slate-500">נוסחאות חישוב</span>
+            <button onClick={() => { setEditingFormula(null); setShowFormulaForm(true); }}
+              className="btn-eng-primary flex items-center gap-1.5 h-8 px-3 text-xs">
               <Plus className="w-3.5 h-3.5" /> הוסף
-            </Button>
+            </button>
           </div>
           {formulas.length === 0 ? (
             <EmptyState label="נוסחאות" code="FORMULAS" onInit={() => initDefaults("formulas")} loading={initializing.formulas} />
@@ -216,40 +215,46 @@ export default function Settings() {
 
         <TabsContent value="profile" className="space-y-4 mt-4">
           {profileForm && (
-            <div className="bg-white rounded-xl border border-slate-200 p-4 sm:p-6 space-y-4">
+            <div className="eng-card p-4 sm:p-6 space-y-4">
               <div className="flex items-center gap-2 mb-2">
-                <User className="w-4 h-4 text-blue-600" />
-                <h3 className="font-bold text-sm text-slate-800">פרופיל מהנדס</h3>
+                <User className="w-4 h-4 text-amber-400" />
+                <h3 className="font-bold text-sm text-slate-200">פרופיל מהנדס</h3>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <Label className="text-xs sm:text-sm">שם המתכנן</Label>
-                  <Input value={profileForm.designer_name} onChange={(e) => setProfileForm({ ...profileForm, designer_name: e.target.value })} className="h-9 text-xs sm:text-sm" placeholder="מהנדס ראשי" />
+                  <Label className="text-xs sm:text-sm text-slate-400">שם המתכנן</Label>
+                  <Input value={profileForm.designer_name} onChange={(e) => setProfileForm({ ...profileForm, designer_name: e.target.value })}
+                    className="h-9 text-xs sm:text-sm bg-[#0d1320] border-[#1e293b] text-slate-200 placeholder:text-slate-600" placeholder="מהנדס ראשי" />
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-xs sm:text-sm">חברה</Label>
-                  <Input value={profileForm.company_name} onChange={(e) => setProfileForm({ ...profileForm, company_name: e.target.value })} className="h-9 text-xs sm:text-sm" placeholder="שם החברה" />
+                  <Label className="text-xs sm:text-sm text-slate-400">חברה</Label>
+                  <Input value={profileForm.company_name} onChange={(e) => setProfileForm({ ...profileForm, company_name: e.target.value })}
+                    className="h-9 text-xs sm:text-sm bg-[#0d1320] border-[#1e293b] text-slate-200 placeholder:text-slate-600" placeholder="שם החברה" />
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="space-y-1.5">
-                  <Label className="text-xs sm:text-sm">דרגת בטון מועדפת</Label>
-                  <Input value={profileForm.preferred_concrete_grade} onChange={(e) => setProfileForm({ ...profileForm, preferred_concrete_grade: e.target.value })} className="h-9 text-xs sm:text-sm" placeholder="B30" />
+                  <Label className="text-xs sm:text-sm text-slate-400">דרגת בטון מועדפת</Label>
+                  <Input value={profileForm.preferred_concrete_grade} onChange={(e) => setProfileForm({ ...profileForm, preferred_concrete_grade: e.target.value })}
+                    className="h-9 text-xs sm:text-sm bg-[#0d1320] border-[#1e293b] text-slate-200 eng-mono" placeholder="B30" />
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-xs sm:text-sm">דרגת פלדה מועדפת</Label>
-                  <Input value={profileForm.preferred_steel_grade} onChange={(e) => setProfileForm({ ...profileForm, preferred_steel_grade: e.target.value })} className="h-9 text-xs sm:text-sm" placeholder="60/40" />
+                  <Label className="text-xs sm:text-sm text-slate-400">דרגת פלדה מועדפת</Label>
+                  <Input value={profileForm.preferred_steel_grade} onChange={(e) => setProfileForm({ ...profileForm, preferred_steel_grade: e.target.value })}
+                    className="h-9 text-xs sm:text-sm bg-[#0d1320] border-[#1e293b] text-slate-200 eng-mono" placeholder="60/40" />
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-xs sm:text-sm">עובי תקרה טיפוסי (מ׳)</Label>
-                  <Input value={profileForm.typical_slab_thickness} onChange={(e) => setProfileForm({ ...profileForm, typical_slab_thickness: e.target.value })} className="h-9 text-xs sm:text-sm" placeholder="0.20" />
+                  <Label className="text-xs sm:text-sm text-slate-400">עובי תקרה טיפוסי (מ׳)</Label>
+                  <Input value={profileForm.typical_slab_thickness} onChange={(e) => setProfileForm({ ...profileForm, typical_slab_thickness: e.target.value })}
+                    className="h-9 text-xs sm:text-sm bg-[#0d1320] border-[#1e293b] text-slate-200 eng-mono" placeholder="0.20" />
                 </div>
               </div>
               <div className="flex justify-end pt-2">
-                <Button onClick={saveProfile} disabled={profileSaving} className="bg-[#1e3a5f] hover:bg-[#2a5a8f] text-white gap-2 h-9 px-5 text-xs font-semibold rounded-lg">
+                <button onClick={saveProfile} disabled={profileSaving}
+                  className="btn-eng-primary flex items-center gap-2 h-9 px-5 text-xs font-semibold disabled:opacity-50">
                   {profileSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
                   שמור פרופיל
-                </Button>
+                </button>
               </div>
             </div>
           )}
@@ -265,12 +270,13 @@ export default function Settings() {
 
 function EmptyState({ label, code, onInit, loading }) {
   return (
-    <div className="bg-white rounded-xl border border-slate-200 text-center py-10">
-      <p className="text-sm text-slate-500 mb-4">לא הוגדרו {label} עדיין</p>
-      <Button onClick={onInit} disabled={loading} className="bg-blue-600 hover:bg-blue-700 text-white gap-2 h-9 px-5 text-xs font-semibold rounded-lg">
+    <div className="eng-card text-center py-10">
+      <p className="text-sm text-slate-400 mb-4">לא הוגדרו {label} עדיין</p>
+      <button onClick={onInit} disabled={loading}
+        className="btn-eng-primary flex items-center gap-2 h-9 px-5 text-xs font-semibold mx-auto disabled:opacity-50">
         {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
         טען {label} סטנדרטיים
-      </Button>
+      </button>
     </div>
   );
 }

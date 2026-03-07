@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { createPageUrl } from "../utils";
 import { api } from "@/api/apiClient";
 import { motion } from "framer-motion";
-import { Building2, ArrowLeft, ArrowRight, Check, Loader2, FileSpreadsheet, Calculator, Shield, Brain } from "lucide-react";
+import { Building2, ArrowLeft, ArrowRight, Check, Loader2, FileSpreadsheet, Calculator, Shield, Brain, Hexagon, Ruler, Layers, Cpu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -435,19 +435,20 @@ export default function Home() {
       <div className="max-w-md mx-auto mt-4 sm:mt-8">
         <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }}>
           {analysisError ? (
-            <div className="bg-white rounded-xl border border-red-200 p-6 text-center space-y-4">
-              <div className="w-12 h-12 bg-red-50 rounded-full flex items-center justify-center mx-auto">
-                <Shield className="w-6 h-6 text-red-500" />
+            <div className="eng-card p-6 text-center space-y-4">
+              <div className="h-0.5 bg-gradient-to-l from-transparent via-rose-500/40 to-transparent -mt-6 mb-6 -mx-6" />
+              <div className="w-12 h-12 bg-rose-500/10 border border-rose-500/20 rounded-lg flex items-center justify-center mx-auto">
+                <Shield className="w-6 h-6 text-rose-400" />
               </div>
-              <h3 className="text-lg font-bold text-slate-900">שגיאה בניתוח</h3>
-              <p className="text-sm text-slate-500">{analysisError}</p>
+              <h3 className="text-lg font-bold text-slate-100">שגיאה בניתוח</h3>
+              <p className="text-sm text-slate-400">{analysisError}</p>
               <div className="flex gap-2 justify-center pt-2">
-                <Button onClick={() => { setAnalysisError(null); setStep("wizard"); setWizardStep(3); }} variant="outline" className="h-9 text-sm rounded-lg">
+                <button onClick={() => { setAnalysisError(null); setStep("wizard"); setWizardStep(3); }} className="btn-eng-secondary h-9 text-sm px-4">
                   חזור לאשף
-                </Button>
-                <Button onClick={() => { setAnalysisError(null); handleStartAnalysis(); }} className="bg-blue-600 hover:bg-blue-700 text-white h-9 text-sm rounded-lg">
+                </button>
+                <button onClick={() => { setAnalysisError(null); handleStartAnalysis(); }} className="btn-eng-primary h-9 text-sm px-5">
                   נסה שוב
-                </Button>
+                </button>
               </div>
             </div>
           ) : (
@@ -460,7 +461,7 @@ export default function Home() {
 
   if (step === "review" && planReadingData) {
     return (
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         <PlanReviewStep planReading={planReadingData} onApprove={handleApproveReading} onCorrections={handleCorrections} isSubmitting={isSubmitting} />
         {unclearData && (
           <UnclearItemsDialog open={!!unclearData} onClose={() => { setUnclearData(null); handleClarifications([]); }}
@@ -473,14 +474,23 @@ export default function Home() {
 
   // WIZARD
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-4xl mx-auto">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
         {/* Hero */}
         <div className="text-center pt-4 sm:pt-8 pb-2">
-          <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
-            כתב כמויות<span className="text-blue-600"> אוטומטי</span>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.1, type: "spring" }}
+            className="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 rounded-full px-4 py-1.5 mb-4"
+          >
+            <span className="status-dot status-dot-active" />
+            <span className="text-xs text-amber-400 font-medium" style={{ fontFamily: "'JetBrains Mono', monospace" }}>AI-POWERED</span>
+          </motion.div>
+          <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-100 tracking-tight leading-tight">
+            כתב כמויות<span className="text-amber-400"> אוטומטי</span>
           </h1>
-          <p className="text-base sm:text-lg text-slate-500 mt-2 max-w-md mx-auto">
+          <p className="text-base sm:text-lg text-slate-400 mt-3 max-w-lg mx-auto">
             העלה תכניות וקבל כתב כמויות מלא — קונסטרוקציה וגמרים
           </p>
         </div>
@@ -488,35 +498,38 @@ export default function Home() {
         {/* Features */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
-            { icon: FileSpreadsheet, title: "קונסטרוקציה", desc: "בטון, ברזל, תבניות" },
-            { icon: Calculator, title: "גמרים", desc: "טיח, צבע, ריצוף, חלונות" },
-            { icon: Shield, title: "מרובה קומות", desc: "תמיכה בקומות טיפוסיות" },
-            { icon: Brain, title: "AI לומד", desc: "משתפר מתיקונים" },
+            { icon: Ruler, title: "קונסטרוקציה", desc: "בטון, ברזל, תבניות", color: "text-cyan-400", bg: "bg-cyan-500/10 border-cyan-500/20" },
+            { icon: Layers, title: "גמרים", desc: "טיח, צבע, ריצוף, חלונות", color: "text-amber-400", bg: "bg-amber-500/10 border-amber-500/20" },
+            { icon: Building2, title: "מרובה קומות", desc: "תמיכה בקומות טיפוסיות", color: "text-emerald-400", bg: "bg-emerald-500/10 border-emerald-500/20" },
+            { icon: Cpu, title: "AI לומד", desc: "משתפר מתיקונים", color: "text-violet-400", bg: "bg-violet-500/10 border-violet-500/20" },
           ].map((f, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }}
-              className="bg-white rounded-xl border border-slate-200/80 p-4 text-center">
-              <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center mx-auto mb-2">
-                <f.icon className="w-5 h-5 text-blue-600" />
+            <motion.div key={i} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 + i * 0.06 }}
+              className="eng-card p-4 text-center hover:border-[#334155] transition-all group">
+              <div className={`w-10 h-10 ${f.bg} border rounded-lg flex items-center justify-center mx-auto mb-2.5`}>
+                <f.icon className={`w-5 h-5 ${f.color}`} />
               </div>
-              <h3 className="font-semibold text-slate-800 text-sm">{f.title}</h3>
-              <p className="text-[11px] text-slate-400 mt-0.5">{f.desc}</p>
+              <h3 className="font-semibold text-slate-200 text-sm">{f.title}</h3>
+              <p className="text-[11px] text-slate-500 mt-0.5">{f.desc}</p>
             </motion.div>
           ))}
         </div>
 
         {/* Pending projects */}
         {pendingProjects?.length > 0 && (
-          <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
-            <h3 className="text-sm font-bold text-amber-800 mb-2">ממתינים לסקירה</h3>
+          <div className="eng-card border-r-2 border-r-amber-500 p-4">
+            <h3 className="text-sm font-bold text-amber-400 mb-3 flex items-center gap-2">
+              <span className="status-dot status-dot-active" />
+              ממתינים לסקירה
+            </h3>
             <div className="space-y-2">
               {pendingProjects.map(p => (
                 <button key={p.id} onClick={() => resumeProject(p.id)}
-                  className="w-full flex items-center justify-between bg-white rounded-lg border border-amber-200 p-3 hover:bg-amber-50 transition-colors text-right">
+                  className="w-full flex items-center justify-between bg-[#0d1320] rounded border border-[#1e293b] p-3 hover:border-amber-500/30 transition-all text-right group">
                   <div className="flex items-center gap-3">
-                    <Building2 className="w-4 h-4 text-amber-600" />
-                    <span className="text-sm font-semibold text-slate-800">{p.name}</span>
+                    <Building2 className="w-4 h-4 text-amber-500/60" />
+                    <span className="text-sm font-semibold text-slate-300">{p.name}</span>
                   </div>
-                  <div className="flex items-center gap-1.5 text-blue-600">
+                  <div className="flex items-center gap-1.5 text-amber-400 opacity-60 group-hover:opacity-100 transition-opacity">
                     <span className="text-xs font-medium">המשך סקירה</span>
                     <ArrowLeft className="w-4 h-4" />
                   </div>
@@ -527,29 +540,32 @@ export default function Home() {
         )}
 
         {/* Wizard Card */}
-        <div className="bg-white rounded-xl border border-slate-200/80 shadow-sm overflow-hidden">
+        <div className="eng-card overflow-hidden">
+          {/* Top amber accent */}
+          <div className="h-0.5 bg-gradient-to-l from-transparent via-amber-500/40 to-transparent" />
+
           {/* Wizard Progress */}
-          <div className="flex items-center border-b border-slate-100 px-5 py-3 gap-1 overflow-x-auto">
+          <div className="flex items-center border-b border-[#1e293b] px-5 py-3 gap-1 overflow-x-auto">
             {WIZARD_STEPS.map((ws, i) => (
               <React.Fragment key={ws.key}>
                 <button
                   onClick={() => i < wizardStep && setWizardStep(i)}
-                  className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium whitespace-nowrap transition-all ${
                     i === wizardStep
-                      ? "bg-blue-600 text-white"
+                      ? "bg-amber-500/15 text-amber-400 border border-amber-500/25"
                       : i < wizardStep
-                      ? "bg-green-50 text-green-700 cursor-pointer hover:bg-green-100"
-                      : "text-slate-300"
+                      ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 cursor-pointer hover:bg-emerald-500/15"
+                      : "text-slate-600 border border-transparent"
                   }`}
                 >
-                  <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
-                    i < wizardStep ? "bg-green-500 text-white" : i === wizardStep ? "bg-white/20 text-white" : "bg-slate-100 text-slate-400"
+                  <span className={`w-5 h-5 rounded flex items-center justify-center text-[10px] font-bold ${
+                    i < wizardStep ? "bg-emerald-500/20 text-emerald-400" : i === wizardStep ? "bg-amber-500/20 text-amber-400" : "bg-[#1e293b] text-slate-500"
                   }`}>
                     {i < wizardStep ? <Check className="w-3 h-3" /> : i + 1}
                   </span>
                   {ws.label}
                 </button>
-                {i < WIZARD_STEPS.length - 1 && <div className="w-4 h-px bg-slate-200 shrink-0" />}
+                {i < WIZARD_STEPS.length - 1 && <div className="w-6 h-px bg-[#1e293b] shrink-0" />}
               </React.Fragment>
             ))}
           </div>
@@ -557,28 +573,28 @@ export default function Home() {
           {/* Step Content */}
           <div className="p-5 sm:p-6">
             {wizardStep === 0 && (
-              <div className="space-y-4">
+              <div className="space-y-5">
                 <div>
-                  <h2 className="text-lg font-bold text-slate-900 mb-1">פרטי פרויקט</h2>
+                  <h2 className="text-lg font-bold text-slate-100 mb-1">פרטי פרויקט</h2>
                   <p className="text-sm text-slate-500">שם הפרויקט ישמש לזיהוי בדוחות</p>
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-sm font-medium text-slate-700">שם הפרויקט</Label>
+                  <Label className="text-xs font-medium text-slate-400 tracking-wide">שם הפרויקט</Label>
                   <Input
                     placeholder='לדוגמה: "בניין מגורים ברח׳ הרצל 15"'
                     value={projectName}
                     onChange={(e) => setProjectName(e.target.value)}
-                    className="h-11 text-sm rounded-lg"
+                    className="h-11 text-sm bg-[#0d1320] border-[#1e293b] text-slate-200 rounded placeholder:text-slate-600"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-sm font-medium text-slate-700">תיאור (אופציונלי)</Label>
+                  <Label className="text-xs font-medium text-slate-400 tracking-wide">תיאור (אופציונלי)</Label>
                   <Textarea
                     placeholder="פרטים נוספים: כתובת, מספר יחידות, מידע רלוונטי לניתוח..."
                     value={projectDescription}
                     onChange={(e) => setProjectDescription(e.target.value)}
                     rows={2}
-                    className="text-sm rounded-lg"
+                    className="text-sm bg-[#0d1320] border-[#1e293b] text-slate-200 rounded placeholder:text-slate-600"
                   />
                 </div>
               </div>
@@ -598,35 +614,34 @@ export default function Home() {
           </div>
 
           {/* Navigation */}
-          <div className="flex items-center justify-between px-5 py-4 border-t border-slate-100 bg-slate-50/50">
-            <Button
-              variant="outline"
+          <div className="flex items-center justify-between px-5 py-4 border-t border-[#1e293b] bg-[#0d1320]/50">
+            <button
               onClick={() => setWizardStep(Math.max(0, wizardStep - 1))}
               disabled={wizardStep === 0}
-              className="gap-1.5 text-sm h-10 rounded-lg"
+              className="btn-eng-secondary gap-1.5 text-sm h-10 px-4 flex items-center disabled:opacity-30"
             >
               <ArrowRight className="w-4 h-4" />
               חזרה
-            </Button>
+            </button>
 
             {wizardStep < WIZARD_STEPS.length - 1 ? (
-              <Button
+              <button
                 onClick={() => setWizardStep(wizardStep + 1)}
                 disabled={!canGoNext()}
-                className="bg-blue-600 hover:bg-blue-700 text-white gap-1.5 text-sm h-10 px-5 rounded-lg"
+                className="btn-eng-primary gap-1.5 text-sm h-10 px-5 flex items-center disabled:opacity-30"
               >
                 הבא
                 <ArrowLeft className="w-4 h-4" />
-              </Button>
+              </button>
             ) : (
-              <Button
+              <button
                 onClick={handleStartAnalysis}
                 disabled={!canGoNext() || isSubmitting}
-                className="bg-blue-600 hover:bg-blue-700 text-white gap-1.5 text-sm h-10 px-6 rounded-lg font-semibold"
+                className="btn-eng-primary gap-2 text-sm h-10 px-6 flex items-center font-semibold disabled:opacity-30"
               >
-                {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
+                {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Hexagon className="w-4 h-4" />}
                 התחל ניתוח
-              </Button>
+              </button>
             )}
           </div>
         </div>

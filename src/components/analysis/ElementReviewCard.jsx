@@ -14,11 +14,11 @@ const TYPE_ICONS = {
 };
 
 const CATEGORY_COLORS = {
-  foundations: "bg-amber-50 text-amber-700",
-  skeleton: "bg-blue-50 text-blue-700",
-  walls: "bg-emerald-50 text-emerald-700",
-  slabs: "bg-purple-50 text-purple-700",
-  default: "bg-slate-50 text-slate-700",
+  foundations: "bg-amber-500/15 text-amber-400",
+  skeleton: "bg-cyan-500/15 text-cyan-400",
+  walls: "bg-emerald-500/15 text-emerald-400",
+  slabs: "bg-violet-500/15 text-violet-400",
+  default: "bg-slate-500/15 text-slate-400",
 };
 
 export default function ElementReviewCard({ element, index, onCorrect }) {
@@ -55,31 +55,31 @@ export default function ElementReviewCard({ element, index, onCorrect }) {
   const dimLabels = { length: "אורך", width: "רוחב", height: "גובה", thickness: "עובי", diameter: "קוטר", depth: "עומק", span: "מוטה" };
 
   const { status: elStatus, issues: elIssues } = getElementStatus(element);
-  const statusBorder = elStatus === "ok" ? "border-r-green-400" : elStatus === "partial" ? "border-r-amber-400" : "border-r-red-400";
+  const statusBorder = elStatus === "ok" ? "border-r-emerald-500" : elStatus === "partial" ? "border-r-amber-500" : "border-r-rose-500";
   const StatusIcon = elStatus === "ok" ? CheckCircle2 : elStatus === "partial" ? AlertTriangle : XCircle;
-  const statusIconColor = elStatus === "ok" ? "text-green-500" : elStatus === "partial" ? "text-amber-500" : "text-red-500";
+  const statusIconColor = elStatus === "ok" ? "text-emerald-400" : elStatus === "partial" ? "text-amber-400" : "text-rose-400";
 
   return (
-    <div className={`bg-white rounded-xl border border-slate-200/80 overflow-hidden border-r-4 ${statusBorder}`}>
+    <div className={`eng-card overflow-hidden border-r-4 ${statusBorder}`}>
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full flex items-center gap-3 p-3.5 hover:bg-slate-50/50 transition-colors text-right"
+        className="w-full flex items-center gap-3 p-3.5 hover:bg-white/[0.02] transition-colors text-right"
       >
-        <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${colorClass}`}>
+        <div className={`w-9 h-9 rounded flex items-center justify-center shrink-0 ${colorClass}`}>
           <Icon className="w-4 h-4" />
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <span className="font-semibold text-sm text-slate-800">{element.id || `אלמנט ${index + 1}`}</span>
-            <Badge variant="outline" className="text-[10px] rounded-md">{element.type}</Badge>
-            {element.count > 1 && <Badge className="bg-blue-50 text-blue-700 text-[10px] rounded-md">×{element.count}</Badge>}
-            {element.is_typical && <Badge className="bg-green-50 text-green-700 text-[10px] rounded-md">טיפוסי</Badge>}
+            <span className="font-semibold text-sm text-slate-200">{element.id || `אלמנט ${index + 1}`}</span>
+            <span className="inline-flex items-center text-[10px] font-medium px-1.5 py-0.5 rounded border border-[#1e293b] text-slate-400 bg-[#111827]">{element.type}</span>
+            {element.count > 1 && <span className="inline-flex items-center text-[10px] font-medium px-1.5 py-0.5 rounded border border-cyan-500/30 text-cyan-400 bg-cyan-500/10">×{element.count}</span>}
+            {element.is_typical && <span className="inline-flex items-center text-[10px] font-medium px-1.5 py-0.5 rounded border border-emerald-500/30 text-emerald-400 bg-emerald-500/10">טיפוסי</span>}
           </div>
           <div className="flex flex-wrap gap-x-2 gap-y-0.5 mt-1">
             {dimEntries.slice(0, 3).map(([k, v]) => (
-              <span key={k} className="text-[11px] text-slate-400">{dimLabels[k] || k}: {v}{dims.unit || ""}</span>
+              <span key={k} className="text-[11px] text-slate-500">{dimLabels[k] || k}: <span className="eng-number">{v}</span>{dims.unit || ""}</span>
             ))}
-            {isValidValue(element.material?.concrete_grade) && <span className="text-[11px] text-slate-400">בטון: {cleanValue(element.material.concrete_grade)}</span>}
+            {isValidValue(element.material?.concrete_grade) && <span className="text-[11px] text-slate-500">בטון: <span className="eng-mono text-slate-400">{cleanValue(element.material.concrete_grade)}</span></span>}
           </div>
           {elIssues.length > 0 && (
             <div className="flex items-center gap-1 mt-1">
@@ -88,22 +88,22 @@ export default function ElementReviewCard({ element, index, onCorrect }) {
             </div>
           )}
         </div>
-        {expanded ? <ChevronDown className="w-4 h-4 text-slate-400 shrink-0" /> : <ChevronLeft className="w-4 h-4 text-slate-400 shrink-0" />}
+        {expanded ? <ChevronDown className="w-4 h-4 text-slate-500 shrink-0" /> : <ChevronLeft className="w-4 h-4 text-slate-500 shrink-0" />}
       </button>
 
       {expanded && (
-        <div className="border-t border-slate-100 p-4 space-y-3 bg-slate-50/30">
+        <div className="border-t border-[#1e293b] p-4 space-y-3 bg-[#0a0f1a]/50">
           {/* Missing data alert */}
           {elIssues.length > 0 && (
-            <div className={`p-3 rounded-lg border ${elStatus === "missing" ? "bg-red-50 border-red-200" : "bg-amber-50 border-amber-200"}`}>
-              <p className={`text-xs font-semibold mb-1.5 ${elStatus === "missing" ? "text-red-700" : "text-amber-700"}`}>
+            <div className={`p-3 rounded border ${elStatus === "missing" ? "bg-rose-500/10 border-rose-500/20" : "bg-amber-500/10 border-amber-500/20"}`}>
+              <p className={`text-xs font-semibold mb-1.5 ${elStatus === "missing" ? "text-rose-400" : "text-amber-400"}`}>
                 נתונים חסרים באלמנט זה:
               </p>
               <ul className="space-y-1">
                 {elIssues.map((issue, i) => (
                   <li key={i} className="flex items-start gap-2 text-xs">
-                    <span className={`mt-0.5 ${elStatus === "missing" ? "text-red-300" : "text-amber-300"}`}>●</span>
-                    <div className={elStatus === "missing" ? "text-red-700" : "text-amber-700"}>
+                    <span className={`mt-0.5 ${elStatus === "missing" ? "text-rose-500/50" : "text-amber-500/50"}`}>●</span>
+                    <div className={elStatus === "missing" ? "text-rose-300/80" : "text-amber-300/80"}>
                       <strong>{issue}</strong>
                       {issue === "חסרות מידות" && <span> — הזן אורך, רוחב, גובה או עובי בלחיצה על "תקן מידות"</span>}
                       {issue === "חסר זיון" && <span> — פרטי זיון (מוטות, כנפות) לא זוהו מהתכנית</span>}
@@ -116,7 +116,7 @@ export default function ElementReviewCard({ element, index, onCorrect }) {
                 size="sm"
                 variant="outline"
                 onClick={() => setEditing(true)}
-                className={`h-7 text-[11px] gap-1 mt-2 rounded-lg ${elStatus === "missing" ? "border-red-300 text-red-700 hover:bg-red-100" : "border-amber-300 text-amber-700 hover:bg-amber-100"}`}
+                className={`h-7 text-[11px] gap-1 mt-2 rounded ${elStatus === "missing" ? "border-rose-500/30 text-rose-400 hover:bg-rose-500/10" : "border-amber-500/30 text-amber-400 hover:bg-amber-500/10"}`}
               >
                 <Pencil className="w-3 h-3" />
                 השלם נתונים חסרים
@@ -130,17 +130,17 @@ export default function ElementReviewCard({ element, index, onCorrect }) {
               <h4 className="text-[11px] font-semibold text-slate-500 mb-1.5">מידות</h4>
               <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                 {dimEntries.map(([k, v]) => (
-                  <div key={k} className="bg-white px-2.5 py-2 rounded-lg border border-slate-200">
-                    <span className="text-[10px] text-slate-400 block">{dimLabels[k] || k}</span>
+                  <div key={k} className="bg-[#111827] px-2.5 py-2 rounded border border-[#1e293b]">
+                    <span className="text-[10px] text-slate-500 block">{dimLabels[k] || k}</span>
                     {editing ? (
                       <Input
                         type="number"
                         defaultValue={v}
                         onChange={(e) => setCorrections(prev => ({ ...prev, [`dimensions.${k}`]: Number(e.target.value) }))}
-                        className="h-6 text-xs mt-0.5 p-1"
+                        className="h-6 text-xs mt-0.5 p-1 bg-[#0d1320] border-[#1e293b] text-slate-200"
                       />
                     ) : (
-                      <span className="text-xs font-semibold text-slate-800">{formatDim(v, dims.unit || 'ס"מ')}</span>
+                      <span className="text-xs font-semibold text-slate-200 eng-number">{formatDim(v, dims.unit || 'ס"מ')}</span>
                     )}
                   </div>
                 ))}
@@ -152,7 +152,7 @@ export default function ElementReviewCard({ element, index, onCorrect }) {
           {isValidValue(reinf.raw_text) && (
             <div>
               <h4 className="text-[11px] font-semibold text-slate-500 mb-1.5">זיון (מקור)</h4>
-              <p className="text-xs text-slate-600 bg-white p-2.5 rounded-lg border border-slate-200 font-mono leading-relaxed">
+              <p className="text-xs text-slate-400 bg-[#111827] p-2.5 rounded border border-[#1e293b] font-mono leading-relaxed">
                 {cleanValue(reinf.raw_text)}
               </p>
             </div>
@@ -164,15 +164,15 @@ export default function ElementReviewCard({ element, index, onCorrect }) {
               <h4 className="text-[11px] font-semibold text-slate-500 mb-1.5">מוטות</h4>
               <div className="grid grid-cols-2 gap-2">
                 {isValidValue(reinf.main_bars?.top) && (
-                  <div className="bg-white px-2.5 py-2 rounded-lg border border-slate-200">
-                    <span className="text-[10px] text-slate-400">עליון</span>
-                    <span className="text-xs font-semibold text-slate-800 block">{cleanValue(reinf.main_bars.top)}</span>
+                  <div className="bg-[#111827] px-2.5 py-2 rounded border border-[#1e293b]">
+                    <span className="text-[10px] text-slate-500">עליון</span>
+                    <span className="text-xs font-semibold text-slate-200 block eng-mono">{cleanValue(reinf.main_bars.top)}</span>
                   </div>
                 )}
                 {isValidValue(reinf.main_bars?.bottom) && (
-                  <div className="bg-white px-2.5 py-2 rounded-lg border border-slate-200">
-                    <span className="text-[10px] text-slate-400">תחתון</span>
-                    <span className="text-xs font-semibold text-slate-800 block">{cleanValue(reinf.main_bars.bottom)}</span>
+                  <div className="bg-[#111827] px-2.5 py-2 rounded border border-[#1e293b]">
+                    <span className="text-[10px] text-slate-500">תחתון</span>
+                    <span className="text-xs font-semibold text-slate-200 block eng-mono">{cleanValue(reinf.main_bars.bottom)}</span>
                   </div>
                 )}
               </div>
@@ -185,21 +185,21 @@ export default function ElementReviewCard({ element, index, onCorrect }) {
               <h4 className="text-[11px] font-semibold text-slate-500 mb-1.5">כנפות</h4>
               <div className="grid grid-cols-3 gap-2">
                 {isValidValue(reinf.stirrups?.diameter) && (
-                  <div className="bg-white px-2.5 py-2 rounded-lg border border-slate-200">
-                    <span className="text-[10px] text-slate-400">קוטר</span>
-                    <span className="text-xs font-semibold block">{cleanValue(reinf.stirrups.diameter)}</span>
+                  <div className="bg-[#111827] px-2.5 py-2 rounded border border-[#1e293b]">
+                    <span className="text-[10px] text-slate-500">קוטר</span>
+                    <span className="text-xs font-semibold text-slate-200 block eng-mono">{cleanValue(reinf.stirrups.diameter)}</span>
                   </div>
                 )}
                 {isValidValue(reinf.stirrups?.spacing) && (
-                  <div className="bg-white px-2.5 py-2 rounded-lg border border-slate-200">
-                    <span className="text-[10px] text-slate-400">ריווח</span>
-                    <span className="text-xs font-semibold block">{cleanValue(reinf.stirrups.spacing)} ס"מ</span>
+                  <div className="bg-[#111827] px-2.5 py-2 rounded border border-[#1e293b]">
+                    <span className="text-[10px] text-slate-500">ריווח</span>
+                    <span className="text-xs font-semibold text-slate-200 block eng-mono">{cleanValue(reinf.stirrups.spacing)} ס"מ</span>
                   </div>
                 )}
                 {isValidValue(reinf.stirrups?.spacing_zones) && (
-                  <div className="bg-white px-2.5 py-2 rounded-lg border border-slate-200 col-span-3">
-                    <span className="text-[10px] text-slate-400">אזורים</span>
-                    <span className="text-xs font-semibold block">{cleanValue(reinf.stirrups.spacing_zones)}</span>
+                  <div className="bg-[#111827] px-2.5 py-2 rounded border border-[#1e293b] col-span-3">
+                    <span className="text-[10px] text-slate-500">אזורים</span>
+                    <span className="text-xs font-semibold text-slate-200 block">{cleanValue(reinf.stirrups.spacing_zones)}</span>
                   </div>
                 )}
               </div>
@@ -212,15 +212,15 @@ export default function ElementReviewCard({ element, index, onCorrect }) {
               <h4 className="text-[11px] font-semibold text-slate-500 mb-1.5">חפיפות וכיפופים</h4>
               <div className="grid grid-cols-2 gap-2">
                 {isValidValue(reinf.lap_splice?.length) && (
-                  <div className="bg-white px-2.5 py-2 rounded-lg border border-slate-200">
-                    <span className="text-[10px] text-slate-400">חפיפה</span>
-                    <span className="text-xs font-semibold block">{cleanValue(reinf.lap_splice.length)} ס"מ{isValidValue(reinf.lap_splice.location) ? ` (${cleanValue(reinf.lap_splice.location)})` : ""}</span>
+                  <div className="bg-[#111827] px-2.5 py-2 rounded border border-[#1e293b]">
+                    <span className="text-[10px] text-slate-500">חפיפה</span>
+                    <span className="text-xs font-semibold text-slate-200 block eng-mono">{cleanValue(reinf.lap_splice.length)} ס"מ{isValidValue(reinf.lap_splice.location) ? ` (${cleanValue(reinf.lap_splice.location)})` : ""}</span>
                   </div>
                 )}
                 {isValidValue(reinf.bends?.angle) && (
-                  <div className="bg-white px-2.5 py-2 rounded-lg border border-slate-200">
-                    <span className="text-[10px] text-slate-400">כיפוף</span>
-                    <span className="text-xs font-semibold block">{cleanValue(reinf.bends.angle)}°{isValidValue(reinf.bends.leg_length) ? ` רגל: ${cleanValue(reinf.bends.leg_length)}` : ""}</span>
+                  <div className="bg-[#111827] px-2.5 py-2 rounded border border-[#1e293b]">
+                    <span className="text-[10px] text-slate-500">כיפוף</span>
+                    <span className="text-xs font-semibold text-slate-200 block eng-mono">{cleanValue(reinf.bends.angle)}°{isValidValue(reinf.bends.leg_length) ? ` רגל: ${cleanValue(reinf.bends.leg_length)}` : ""}</span>
                   </div>
                 )}
               </div>
@@ -232,29 +232,29 @@ export default function ElementReviewCard({ element, index, onCorrect }) {
             <div>
               <h4 className="text-[11px] font-semibold text-slate-500 mb-1.5">רשת</h4>
               <div className="grid grid-cols-2 gap-2">
-                {isValidValue(reinf.mesh.direction_x) && <div className="bg-white px-2.5 py-2 rounded-lg border border-slate-200"><span className="text-[10px] text-slate-400">כיוון X</span><span className="text-xs font-semibold block">{cleanValue(reinf.mesh.direction_x)}</span></div>}
-                {isValidValue(reinf.mesh.direction_y) && <div className="bg-white px-2.5 py-2 rounded-lg border border-slate-200"><span className="text-[10px] text-slate-400">כיוון Y</span><span className="text-xs font-semibold block">{cleanValue(reinf.mesh.direction_y)}</span></div>}
+                {isValidValue(reinf.mesh.direction_x) && <div className="bg-[#111827] px-2.5 py-2 rounded border border-[#1e293b]"><span className="text-[10px] text-slate-500">כיוון X</span><span className="text-xs font-semibold text-slate-200 block eng-mono">{cleanValue(reinf.mesh.direction_x)}</span></div>}
+                {isValidValue(reinf.mesh.direction_y) && <div className="bg-[#111827] px-2.5 py-2 rounded border border-[#1e293b]"><span className="text-[10px] text-slate-500">כיוון Y</span><span className="text-xs font-semibold text-slate-200 block eng-mono">{cleanValue(reinf.mesh.direction_y)}</span></div>}
               </div>
             </div>
           )}
 
           {isValidValue(element.grid_location) && (
-            <div className="text-xs text-slate-400">מיקום על צירים: <span className="font-semibold text-slate-600">{cleanValue(element.grid_location)}</span></div>
+            <div className="text-xs text-slate-500">מיקום על צירים: <span className="font-semibold text-slate-300 eng-mono">{cleanValue(element.grid_location)}</span></div>
           )}
 
           {isValidValue(element.notes) && (
-            <p className="text-xs text-slate-600 bg-amber-50 p-2.5 rounded-lg border border-amber-200">📝 {cleanValue(element.notes)}</p>
+            <p className="text-xs text-amber-300/80 bg-amber-500/10 p-2.5 rounded border border-amber-500/20">{cleanValue(element.notes)}</p>
           )}
 
           {/* Edit actions */}
           <div className="flex gap-2 pt-1">
             {editing ? (
               <>
-                <Button size="sm" onClick={handleSaveCorrection} className="h-8 text-xs bg-green-600 hover:bg-green-700 gap-1 rounded-lg"><Check className="w-3 h-3" />שמור תיקון</Button>
-                <Button size="sm" variant="outline" onClick={() => { setEditing(false); setCorrections({}); }} className="h-8 text-xs gap-1 rounded-lg"><X className="w-3 h-3" />ביטול</Button>
+                <Button size="sm" onClick={handleSaveCorrection} className="h-8 text-xs bg-emerald-600 hover:bg-emerald-700 text-white gap-1 rounded"><Check className="w-3 h-3" />שמור תיקון</Button>
+                <Button size="sm" variant="outline" onClick={() => { setEditing(false); setCorrections({}); }} className="h-8 text-xs gap-1 rounded border-[#1e293b] text-slate-400 hover:bg-white/5"><X className="w-3 h-3" />ביטול</Button>
               </>
             ) : (
-              <Button size="sm" variant="outline" onClick={() => setEditing(true)} className="h-8 text-xs gap-1 rounded-lg"><Pencil className="w-3 h-3" />תקן מידות</Button>
+              <Button size="sm" variant="outline" onClick={() => setEditing(true)} className="h-8 text-xs gap-1 rounded border-[#1e293b] text-slate-400 hover:text-amber-400 hover:border-amber-500/30 hover:bg-amber-500/5"><Pencil className="w-3 h-3" />תקן מידות</Button>
             )}
           </div>
         </div>

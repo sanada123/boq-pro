@@ -3,15 +3,15 @@ import { Badge } from "@/components/ui/badge";
 import { BookOpen } from "lucide-react";
 
 const LEGEND_SECTIONS = [
-  { key: "column_symbols", label: "עמודים", color: "bg-blue-50 text-blue-700" },
-  { key: "beam_symbols", label: "קורות", color: "bg-purple-50 text-purple-700" },
-  { key: "foundation_symbols", label: "יסודות", color: "bg-amber-50 text-amber-700" },
-  { key: "wall_symbols", label: "קירות", color: "bg-emerald-50 text-emerald-700" },
-  { key: "slab_symbols", label: "תקרות/פלטות", color: "bg-cyan-50 text-cyan-700" },
-  { key: "material_codes", label: "חומרים", color: "bg-slate-100 text-slate-700" },
-  { key: "reinforcement_codes", label: "זיון", color: "bg-red-50 text-red-700" },
-  { key: "graphic_symbols", label: "סימנים גרפיים", color: "bg-pink-50 text-pink-700" },
-  { key: "other_symbols", label: "אחר", color: "bg-gray-50 text-gray-600" },
+  { key: "column_symbols", label: "עמודים", color: "bg-cyan-500/15 text-cyan-400 border-cyan-500/30" },
+  { key: "beam_symbols", label: "קורות", color: "bg-violet-500/15 text-violet-400 border-violet-500/30" },
+  { key: "foundation_symbols", label: "יסודות", color: "bg-amber-500/15 text-amber-400 border-amber-500/30" },
+  { key: "wall_symbols", label: "קירות", color: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30" },
+  { key: "slab_symbols", label: "תקרות/פלטות", color: "bg-sky-500/15 text-sky-400 border-sky-500/30" },
+  { key: "material_codes", label: "חומרים", color: "bg-slate-500/15 text-slate-400 border-slate-500/30" },
+  { key: "reinforcement_codes", label: "זיון", color: "bg-rose-500/15 text-rose-400 border-rose-500/30" },
+  { key: "graphic_symbols", label: "סימנים גרפיים", color: "bg-pink-500/15 text-pink-400 border-pink-500/30" },
+  { key: "other_symbols", label: "אחר", color: "bg-slate-500/15 text-slate-500 border-slate-500/30" },
 ];
 
 export default function LegendDisplay({ legend }) {
@@ -25,10 +25,10 @@ export default function LegendDisplay({ legend }) {
   if (!hasContent) return null;
 
   return (
-    <div className="bg-white rounded-xl border border-slate-200/80 p-4">
+    <div className="eng-card p-4">
       <div className="flex items-center gap-2 mb-3">
-        <BookOpen className="w-4 h-4 text-blue-600" />
-        <h3 className="text-sm font-bold text-slate-800">מקרא התכנית</h3>
+        <BookOpen className="w-4 h-4 text-amber-400" />
+        <h3 className="text-sm font-bold text-slate-200">מקרא התכנית</h3>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -36,13 +36,15 @@ export default function LegendDisplay({ legend }) {
           const data = legend[section.key];
           if (!data || Object.keys(data).length === 0) return null;
           return (
-            <div key={section.key} className="bg-slate-50/50 rounded-lg p-3 border border-slate-100">
-              <Badge className={`${section.color} text-[10px] mb-2 rounded-md`}>{section.label}</Badge>
+            <div key={section.key} className="bg-[#0d1320] rounded border border-[#1e293b] p-3">
+              <span className={`inline-flex items-center text-[10px] font-medium px-2 py-0.5 rounded border mb-2 ${section.color}`}>
+                {section.label}
+              </span>
               <div className="space-y-1">
                 {Object.entries(data).map(([symbol, meaning]) => (
                   <div key={symbol} className="flex items-start gap-1.5 text-[11px]">
-                    <span className="font-mono font-semibold text-slate-700 shrink-0 bg-white px-1.5 py-0.5 rounded border border-slate-200">{symbol}</span>
-                    <span className="text-slate-500">{meaning}</span>
+                    <span className="font-mono font-semibold text-amber-400 shrink-0 bg-[#111827] px-1.5 py-0.5 rounded border border-[#1e293b]">{symbol}</span>
+                    <span className="text-slate-400">{meaning}</span>
                   </div>
                 ))}
               </div>
