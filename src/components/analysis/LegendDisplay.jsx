@@ -19,8 +19,11 @@ function toDisplayString(val) {
   if (val == null) return "";
   if (typeof val === "string") return val;
   if (typeof val === "number" || typeof val === "boolean") return String(val);
+  if (Array.isArray(val)) return val.map(toDisplayString).join(", ");
   if (typeof val === "object") {
-    return val.description || val.name || val.text || val.value || JSON.stringify(val);
+    return val.description || val.pattern_type || val.pattern || val.item || val.text
+      || val.name || val.aspect || val.notes || val.reason || val.value
+      || JSON.stringify(val);
   }
   return String(val);
 }
