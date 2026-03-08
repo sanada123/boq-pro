@@ -57,16 +57,29 @@ async def invoke_llm(
                         "source": {"type": "base64", "media_type": media_type, "data": data},
                     })
 
-    # Add text prompt
-    content.append({"type": "text", "text": body.prompt})
+    # Add text prompt (include schema hint if provided)
+    prompt_text = body.prompt
+    if body.response_json_schema:
+        prompt_text += f"\n\n[JSON Schema — your response MUST match this structure exactly]\n{json.dumps(body.response_json_schema, ensure_ascii=False)}"
+    content.append({"type": "text", "text": prompt_text})
 
-    # Call Claude
+    # System message to enforce pure JSON output
+    system_msg = (
+        "You are an expert Israeli construction engineer. "
+        "CRITICAL: You MUST respond with a single valid JSON object ONLY. "
+        "No markdown fences, no explanations, no text before or after the JSON. "
+        "All array fields MUST be actual JSON arrays (e.g. []), never strings. "
+        "All numeric fields must be numbers, not strings."
+    )
+
+    # Call Claude with retry logic
     max_retries = 3
     for attempt in range(max_retries):
         try:
             response = client.messages.create(
                 model=settings.llm_model,
                 max_tokens=16384,
+                system=system_msg,
                 messages=[{"role": "user", "content": content}],
             )
             break
@@ -82,14 +95,34 @@ async def invoke_llm(
     # Extract text response
     raw_text = response.content[0].text if response.content else ""
 
-    # Try to parse as JSON (matching Express behavior)
+    # Parse JSON response — strip markdown fences if present
     try:
         cleaned = raw_text.strip()
         if cleaned.startswith("```"):
+            # Remove opening fence (```json or ```)
             cleaned = cleaned.split("\n", 1)[1] if "\n" in cleaned else cleaned[3:]
             if cleaned.endswith("```"):
                 cleaned = cleaned[:-3].strip()
         result = json.loads(cleaned)
+
+        # Post-process: ensure expected array fields are actual arrays
+        if body.response_json_schema and isinstance(result, dict):
+            props = body.response_json_schema.get("properties", {})
+            for key, schema in props.items():
+                if schema.get("type") == "array" and key in result:
+                    val = result[key]
+                    if val is None:
+                        result[key] = []
+                    elif isinstance(val, str):
+                        # Try to parse stringified arrays
+                        try:
+                            parsed = json.loads(val)
+                            result[key] = parsed if isinstance(parsed, list) else []
+                        except (json.JSONDecodeError, TypeError):
+                            result[key] = []
+                    elif not isinstance(val, list):
+                        result[key] = []
+
         return result
     except (json.JSONDecodeError, IndexError):
         return {"response": raw_text}

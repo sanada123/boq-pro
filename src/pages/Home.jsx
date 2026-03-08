@@ -36,6 +36,23 @@ const WIZARD_STEPS = [
   { key: "plans", label: "העלאת תכניות" },
 ];
 
+/**
+ * Safely coerce a value to an array.
+ * Handles: null, undefined, actual arrays, JSON strings, and non-array truthy values.
+ */
+function ensureArray(val) {
+  if (val == null) return [];
+  if (Array.isArray(val)) return val;
+  if (typeof val === "string") {
+    const trimmed = val.trim();
+    if (trimmed.startsWith("[")) {
+      try { const parsed = JSON.parse(trimmed); if (Array.isArray(parsed)) return parsed; } catch {}
+    }
+    return [];
+  }
+  return [];
+}
+
 export default function Home() {
   const navigate = useNavigate();
 
@@ -83,13 +100,13 @@ export default function Home() {
     const planReadings = await api.entities.PlanReading.filter({ project_id: projectId });
     if (planReadings.length > 0) {
       const pr = planReadings[0];
-      const parseArr = (arr) => (arr || []).map(item => { if (typeof item === "string") { try { return JSON.parse(item); } catch { return item; } } return item; });
+      const parseArr = (arr) => ensureArray(arr).map(item => { if (typeof item === "string") { try { return JSON.parse(item); } catch { return item; } } return item; });
       const readingData = {
         plan_type: pr.plan_type, plan_type_category: pr.plan_type_category,
         scale: pr.scale, title_info: pr.title_info, elements: parseArr(pr.elements),
         legend: pr.legend, sections_cuts: parseArr(pr.sections_cuts),
         reinforcement_schedule: parseArr(pr.reinforcement_details),
-        unclear_items: pr.unclear_items || [], confidence_notes: pr.confidence_notes,
+        unclear_items: ensureArray(pr.unclear_items), confidence_notes: pr.confidence_notes,
         detected_patterns: [],
       };
       setPlanReadingData(readingData);
@@ -263,10 +280,10 @@ export default function Home() {
       finalReading = readings[0];
     }
 
-    setPass1Summary({ plan_type: finalReading.plan_type || "לא זוהה", element_count: finalReading.elements?.length || 0, unclear_count: finalReading.unclear_items?.length || 0 });
+    setPass1Summary({ plan_type: finalReading.plan_type || "לא זוהה", element_count: ensureArray(finalReading.elements).length, unclear_count: ensureArray(finalReading.unclear_items).length });
 
     // Save PlanReading
-    const toStringArray = (arr) => (arr || []).map(item => typeof item === "string" ? item : JSON.stringify(item));
+    const toStringArray = (arr) => ensureArray(arr).map(item => typeof item === "string" ? item : JSON.stringify(item));
     await api.entities.PlanReading.create({
       project_id: project.id, plan_type: finalReading.plan_type, plan_type_category: finalReading.plan_type_category,
       scale: finalReading.scale, title_info: finalReading.title_info, elements: toStringArray(finalReading.elements),
@@ -355,11 +372,11 @@ export default function Home() {
       response_json_schema: getPass2Schema(),
     });
 
-    const hasUnclear = (correctedPass1.unclear_items?.length || 0) > 0;
-    const hasSkipped = (pass2Result.skipped_elements?.length || 0) > 0;
+    const hasUnclear = ensureArray(correctedPass1.unclear_items).length > 0;
+    const hasSkipped = ensureArray(pass2Result.skipped_elements).length > 0;
     if (hasUnclear || hasSkipped) {
       setPendingAnalysis({ project: projectRef, pass1Result: correctedPass1, pass2Result, priceTable });
-      setUnclearData({ unclearItems: correctedPass1.unclear_items || [], skippedElements: pass2Result.skipped_elements || [] });
+      setUnclearData({ unclearItems: ensureArray(correctedPass1.unclear_items), skippedElements: ensureArray(pass2Result.skipped_elements) });
       setIsSubmitting(false);
       return;
     }
@@ -396,14 +413,14 @@ export default function Home() {
 
     setAnalysisStep("saving");
     const combinedNotes = [
-      `סוג תכנית: ${pass1Result.plan_type}`, `אלמנטים: ${pass1Result.elements?.length || 0}`,
-      pass1Result.unclear_items?.length > 0 ? `לא ברורים: ${pass1Result.unclear_items.join(", ")}` : null,
+      `סוג תכנית: ${pass1Result.plan_type}`, `אלמנטים: ${ensureArray(pass1Result.elements).length}`,
+      ensureArray(pass1Result.unclear_items).length > 0 ? `לא ברורים: ${ensureArray(pass1Result.unclear_items).join(", ")}` : null,
       pass1Result.confidence_notes,
-      finalPass2.skipped_elements?.length > 0 ? `דולגו: ${finalPass2.skipped_elements.map(s => `${s.element_ref} (${s.reason})`).join(", ")}` : null,
+      ensureArray(finalPass2.skipped_elements).length > 0 ? `דולגו: ${ensureArray(finalPass2.skipped_elements).map(s => `${s.element_ref} (${s.reason})`).join(", ")}` : null,
       pass3Result.analysis_notes,
     ].filter(Boolean).join("\n\n");
 
-    const itemsToCreate = (pass3Result.items || []).map(item => ({
+    const itemsToCreate = ensureArray(pass3Result.items).map(item => ({
       project_id: project.id, section: item.section, section_name_he: item.section_name_he,
       item_number: item.item_number, description: item.description, unit: item.unit,
       unit_name_he: item.unit_name_he, quantity: item.quantity, unit_price: item.unit_price,
@@ -413,7 +430,7 @@ export default function Home() {
 
     await api.entities.Project.update(project.id, {
       status: "completed", analysis_notes: combinedNotes, total_estimated_cost: pass3Result.total_estimated_cost || 0,
-      quantities_data: { item_count: itemsToCreate.length, plan_type: pass1Result.plan_type_category, elements_found: pass1Result.elements?.length || 0, skipped_elements: finalPass2.skipped_elements?.length || 0 },
+      quantities_data: { item_count: itemsToCreate.length, plan_type: pass1Result.plan_type_category, elements_found: ensureArray(pass1Result.elements).length, skipped_elements: ensureArray(finalPass2.skipped_elements).length },
     });
 
     setIsSubmitting(false);

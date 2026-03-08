@@ -1,3 +1,17 @@
+/** Safely coerce a value to an array (handles null, strings, non-arrays). */
+function ensureArray(val) {
+  if (val == null) return [];
+  if (Array.isArray(val)) return val;
+  if (typeof val === "string") {
+    const trimmed = val.trim();
+    if (trimmed.startsWith("[")) {
+      try { const parsed = JSON.parse(trimmed); if (Array.isArray(parsed)) return parsed; } catch {}
+    }
+    return [];
+  }
+  return [];
+}
+
 // ═══════════════════════════════════════════════════════════
 // PASS 1: קריאת התכנית — חילוץ מקסימלי של כל סימון הנדסי
 // ═══════════════════════════════════════════════════════════
@@ -417,8 +431,8 @@ ${readings.map((r, i) => `
 // ═══════════════════════════════════════════════════════════
 
 export function buildPass2Prompt(pass1Data, formulasSection, standardsSection, engineerProfile, workType, categories) {
-  const tablesSummary = (pass1Data.tables || []).map(t => `טבלה "${t.table_name}": ${t.content}`).join("\n");
-  const reinfSchedule = (pass1Data.reinforcement_schedule || []).length > 0
+  const tablesSummary = ensureArray(pass1Data.tables).map(t => `טבלה "${t.table_name}": ${t.content}`).join("\n");
+  const reinfSchedule = ensureArray(pass1Data.reinforcement_schedule).length > 0
     ? `\nטבלת זיון:\n${JSON.stringify(pass1Data.reinforcement_schedule, null, 2)}`
     : "";
 
@@ -798,8 +812,8 @@ ${engineerProfile.correction_history.slice(-10).map(c => `- ${c}`).join("\n")}` 
 מקרא התכנית (ספציפי לתכנית זו!):
 ${JSON.stringify(pass1aContext.legend || {}, null, 2)}
 
-קודי חומרים: ${(pass1aContext.material_codes || []).join(", ") || "לא זוהו"}
-הערות מהנדס: ${(pass1aContext.engineer_notes || []).join(" | ") || "אין"}
+קודי חומרים: ${ensureArray(pass1aContext.material_codes).join(", ") || "לא זוהו"}
+הערות מהנדס: ${ensureArray(pass1aContext.engineer_notes).join(" | ") || "אין"}
 ` : "";
 
   const tableContextStr = tableContext ? `
