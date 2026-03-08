@@ -10,20 +10,45 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { AlertTriangle, MessageCircle, CheckCircle2 } from "lucide-react";
 
+/** Safely convert any value to a display string — LLM sometimes returns objects instead of strings */
+function toDisplayString(val) {
+  if (val == null) return "";
+  if (typeof val === "string") return val;
+  if (typeof val === "number" || typeof val === "boolean") return String(val);
+  if (typeof val === "object") {
+    return val.description || val.pattern_type || val.item || val.text || val.name || val.value || JSON.stringify(val);
+  }
+  return String(val);
+}
+
+/** Ensure a value is always an array */
+function ensureArray(val) {
+  if (val == null) return [];
+  if (Array.isArray(val)) return val;
+  if (typeof val === "string") {
+    const trimmed = val.trim();
+    if (trimmed.startsWith("[")) {
+      try { const parsed = JSON.parse(trimmed); if (Array.isArray(parsed)) return parsed; } catch {}
+    }
+    return [];
+  }
+  return [];
+}
+
 export default function UnclearItemsDialog({ open, onClose, unclearItems, skippedElements, onSubmitClarifications }) {
   const [clarifications, setClarifications] = useState({});
   const [submitting, setSubmitting] = useState(false);
 
   const allIssues = [
-    ...(unclearItems || []).map((item, i) => ({
+    ...ensureArray(unclearItems).map((item, i) => ({
       id: `unclear_${i}`,
       type: "unclear",
-      text: item,
+      text: toDisplayString(item),
     })),
-    ...(skippedElements || []).map((el, i) => ({
+    ...ensureArray(skippedElements).map((el, i) => ({
       id: `skipped_${i}`,
       type: "skipped",
-      text: `${el.element_ref} — ${el.reason}`,
+      text: `${toDisplayString(el?.element_ref)} — ${toDisplayString(el?.reason)}`,
     })),
   ];
 

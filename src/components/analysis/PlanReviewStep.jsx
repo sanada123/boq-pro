@@ -7,17 +7,43 @@ import ElementReviewCard from "./ElementReviewCard";
 import LegendDisplay from "./LegendDisplay";
 import ReviewSummaryBar from "./ReviewSummaryBar";
 
+/** Safely convert any value to a display string — LLM sometimes returns objects instead of strings */
+function toDisplayString(val) {
+  if (val == null) return "";
+  if (typeof val === "string") return val;
+  if (typeof val === "number" || typeof val === "boolean") return String(val);
+  if (typeof val === "object") {
+    return val.description || val.pattern_type || val.item || val.text || val.name || val.value || JSON.stringify(val);
+  }
+  return String(val);
+}
+
+/** Ensure a value is always an array — handles null, strings, and LLM quirks */
+function ensureArray(val) {
+  if (val == null) return [];
+  if (Array.isArray(val)) return val;
+  if (typeof val === "string") {
+    const trimmed = val.trim();
+    if (trimmed.startsWith("[")) {
+      try { const parsed = JSON.parse(trimmed); if (Array.isArray(parsed)) return parsed; } catch {}
+    }
+    return [];
+  }
+  return [];
+}
+
 export default function PlanReviewStep({ planReading, onApprove, onCorrections, isSubmitting }) {
   const [corrections, setCorrections] = useState({});
   const [showSections, setShowSections] = useState(true);
   const [showSchedule, setShowSchedule] = useState(false);
 
-  const elements = planReading.elements || [];
-  const unclearCount = (planReading.unclear_items || []).length;
+  const elements = ensureArray(planReading.elements);
+  const unclearItems = ensureArray(planReading.unclear_items);
+  const unclearCount = unclearItems.length;
   const legend = planReading.legend;
-  const sectionsCuts = planReading.sections_cuts || [];
-  const reinfSchedule = planReading.reinforcement_schedule || [];
-  const patterns = planReading.detected_patterns || [];
+  const sectionsCuts = ensureArray(planReading.sections_cuts);
+  const reinfSchedule = ensureArray(planReading.reinforcement_schedule);
+  const patterns = ensureArray(planReading.detected_patterns);
 
   const handleElementCorrect = (index, elementCorrections) => {
     setCorrections(prev => ({
@@ -97,7 +123,7 @@ export default function PlanReviewStep({ planReading, onApprove, onCorrections, 
             <span className="text-xs font-semibold text-blue-600">דפוסים שזוהו:</span>
             <div className="flex flex-wrap gap-1 mt-1">
               {patterns.map((p, i) => (
-                <span key={i} className="inline-flex items-center text-[10px] font-medium px-1.5 py-0.5 rounded bg-cyan-500/15 text-cyan-300 border border-cyan-500/25">{p}</span>
+                <span key={i} className="inline-flex items-center text-[10px] font-medium px-1.5 py-0.5 rounded bg-blue-50 text-blue-600 border border-blue-200">{toDisplayString(p)}</span>
               ))}
             </div>
           </div>
@@ -219,10 +245,10 @@ export default function PlanReviewStep({ planReading, onApprove, onCorrections, 
             <span className="text-sm font-bold text-amber-600">פריטים לא ברורים</span>
           </div>
           <ul className="space-y-1">
-            {planReading.unclear_items.map((item, i) => (
+            {unclearItems.map((item, i) => (
               <li key={i} className="text-xs text-amber-600/70 flex items-start gap-1.5">
                 <span className="text-amber-500/50 mt-0.5">•</span>
-                {item}
+                {toDisplayString(item)}
               </li>
             ))}
           </ul>
@@ -230,7 +256,7 @@ export default function PlanReviewStep({ planReading, onApprove, onCorrections, 
       )}
 
       {planReading.confidence_notes && (
-        <p className="text-xs text-slate-500 px-1">{planReading.confidence_notes}</p>
+        <p className="text-xs text-slate-500 px-1">{toDisplayString(planReading.confidence_notes)}</p>
       )}
 
       {/* Actions */}

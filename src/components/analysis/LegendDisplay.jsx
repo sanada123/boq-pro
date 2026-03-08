@@ -14,6 +14,17 @@ const LEGEND_SECTIONS = [
   { key: "other_symbols", label: "אחר", color: "bg-slate-500/15 text-slate-500 border-slate-500/30" },
 ];
 
+/** Safely convert any value to a display string */
+function toDisplayString(val) {
+  if (val == null) return "";
+  if (typeof val === "string") return val;
+  if (typeof val === "number" || typeof val === "boolean") return String(val);
+  if (typeof val === "object") {
+    return val.description || val.name || val.text || val.value || JSON.stringify(val);
+  }
+  return String(val);
+}
+
 export default function LegendDisplay({ legend }) {
   if (!legend) return null;
 
@@ -44,7 +55,7 @@ export default function LegendDisplay({ legend }) {
                 {Object.entries(data).map(([symbol, meaning]) => (
                   <div key={symbol} className="flex items-start gap-1.5 text-[11px]">
                     <span className="font-mono font-semibold text-amber-600 shrink-0 bg-white px-1.5 py-0.5 rounded border border-slate-200">{symbol}</span>
-                    <span className="text-slate-400">{meaning}</span>
+                    <span className="text-slate-400">{toDisplayString(meaning)}</span>
                   </div>
                 ))}
               </div>
