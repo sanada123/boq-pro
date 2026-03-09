@@ -73,7 +73,7 @@ def create_entity_router(
     router = APIRouter()
     columns = {col.name for col in model.__table__.columns}
 
-    @router.get("/")
+    @router.get("")
     async def list_entities(
         request: Request,
         db: AsyncSession = Depends(get_db),
@@ -119,7 +119,7 @@ def create_entity_router(
             raise HTTPException(status_code=404, detail="Not found")
         return _serialize_row(row, model)
 
-    @router.post("/")
+    @router.post("")
     async def create_entity(
         request: Request,
         db: AsyncSession = Depends(get_db),
