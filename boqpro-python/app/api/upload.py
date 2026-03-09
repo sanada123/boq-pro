@@ -8,7 +8,7 @@ from app.dependencies import get_current_user
 router = APIRouter()
 
 
-@router.post("/")
+@router.post("")
 async def upload_file(
     file: UploadFile = File(...),
     current_user: dict = Depends(get_current_user),

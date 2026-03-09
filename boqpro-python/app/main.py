@@ -101,6 +101,11 @@ if os.path.isdir(dist_path):
     # This enables client-side routing (/Login, /Projects, etc.)
     @app.get("/{full_path:path}", include_in_schema=False)
     async def serve_frontend(full_path: str):
+        # Never intercept API routes — let FastAPI return proper 404/405
+        if full_path.startswith("api/") or full_path == "api":
+            from fastapi.responses import JSONResponse
+            return JSONResponse(status_code=404, content={"detail": "Not Found"})
+
         # Try serving an exact file from dist/ (favicon.ico, robots.txt, etc.)
         file_path = os.path.join(os.path.abspath(dist_path), full_path)
         if full_path and os.path.isfile(file_path):
