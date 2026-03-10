@@ -21,7 +21,7 @@ const CATEGORY_COLORS = {
   default: "bg-slate-500/15 text-slate-400",
 };
 
-export default function ElementReviewCard({ element, index, onCorrect }) {
+export default function ElementReviewCard({ element, index, onCorrect, hasReinfDetails = false }) {
   const [expanded, setExpanded] = useState(false);
   const [editing, setEditing] = useState(false);
   const [corrections, setCorrections] = useState({});
@@ -52,9 +52,37 @@ export default function ElementReviewCard({ element, index, onCorrect }) {
   };
 
   const dimEntries = Object.entries(dims).filter(([k, v]) => k !== "unit" && isValidValue(v));
-  const dimLabels = { length: "אורך", width: "רוחב", height: "גובה", thickness: "עובי", diameter: "קוטר", depth: "עומק", span: "מוטה" };
 
-  const { status: elStatus, issues: elIssues } = getElementStatus(element);
+  // Comprehensive Hebrew labels for ALL dimension field names the LLM may return
+  const dimLabels = {
+    // Base names
+    length: "אורך", width: "רוחב", height: "גובה", thickness: "עובי",
+    diameter: "קוטר", depth: "עומק", span: "מוטה", spacing: "ריווח",
+    cover: "כיסוי", area: "שטח", volume: "נפח", perimeter: "היקף",
+    radius: "רדיוס", pitch: "שיפוע", offset: "היסט",
+    // _mm variants
+    length_mm: "אורך (מ״מ)", width_mm: "רוחב (מ״מ)", height_mm: "גובה (מ״מ)",
+    thickness_mm: "עובי (מ״מ)", diameter_mm: "קוטר (מ״מ)", depth_mm: "עומק (מ״מ)",
+    spacing_mm: "ריווח (מ״מ)", cover_mm: "כיסוי (מ״מ)",
+    bar_diameter_mm: "קוטר מוט (מ״מ)", bar_diameter: "קוטר מוט",
+    // _cm variants
+    length_cm: "אורך (ס״מ)", width_cm: "רוחב (ס״מ)", height_cm: "גובה (ס״מ)",
+    thickness_cm: "עובי (ס״מ)", depth_cm: "עומק (ס״מ)", spacing_cm: "ריווח (ס״מ)",
+    cover_cm: "כיסוי (ס״מ)",
+    // _m variants
+    length_m: "אורך (מ׳)", width_m: "רוחב (מ׳)", height_m: "גובה (מ׳)",
+    span_m: "מוטה (מ׳)", depth_m: "עומק (מ׳)",
+    // Slab / raft specific
+    slab_thickness: "עובי פלטה", raft_thickness: "עובי רפסודה",
+    top_cover: "כיסוי עליון", bottom_cover: "כיסוי תחתון",
+    min_thickness: "עובי מינימלי", max_thickness: "עובי מקסימלי",
+    clear_span: "מוטה נקייה", effective_depth: "עומק אפקטיבי",
+    // Beam / column specific
+    b: "רוחב (b)", h: "גובה (h)", d: "עומק אפקטיבי (d)",
+    cross_section: "חתך",
+  };
+
+  const { status: elStatus, issues: elIssues } = getElementStatus(element, hasReinfDetails);
   const statusBorder = elStatus === "ok" ? "border-r-emerald-500" : elStatus === "partial" ? "border-r-amber-500" : "border-r-rose-500";
   const StatusIcon = elStatus === "ok" ? CheckCircle2 : elStatus === "partial" ? AlertTriangle : XCircle;
   const statusIconColor = elStatus === "ok" ? "text-emerald-600" : elStatus === "partial" ? "text-amber-600" : "text-rose-600";

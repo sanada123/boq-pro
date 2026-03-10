@@ -1,33 +1,64 @@
 import React from "react";
 import { CheckCircle2, AlertTriangle, XCircle, Info } from "lucide-react";
 
-function analyzeElement(el) {
+/**
+ * Element types that ARE reinforcement data — they should never be flagged
+ * for "missing reinforcement" or "missing concrete grade" because they're
+ * steel bar details extracted from the reinforcement schedule, not concrete elements.
+ */
+const REINF_TYPE_PATTERNS = ["פרט זיון", "reinforcement", "rebar", "bar_detail"];
+
+function isReinforcementDetail(el) {
+  const t = (el.type || "").toLowerCase();
+  const id = (el.id || "").toLowerCase();
+  return REINF_TYPE_PATTERNS.some(p => t.includes(p) || id.includes(p));
+}
+
+/**
+ * Smart element analysis — understands the CONTEXT of each element type.
+ * A reinforcement detail is steel, not concrete — don't ask for concrete grade.
+ * A raft foundation with separate reinforcement details doesn't need nested rebar data.
+ */
+function analyzeElement(el, contextHasReinfDetails = false) {
   const issues = [];
   const dims = el.dimensions || {};
   const reinf = el.reinforcement || {};
   const isValid = (v) => v != null && v !== "null" && v !== "" && v !== 0 && v !== "0";
 
+  // Dimensions — every element needs some dimensions
   const hasDims = Object.entries(dims).some(([k, v]) => k !== "unit" && isValid(v));
   if (!hasDims) issues.push("חסרות מידות");
 
-  const hasReinf = isValid(reinf.raw_text) || isValid(reinf.main_bars?.top) || isValid(reinf.main_bars?.bottom) || isValid(reinf.stirrups?.diameter);
-  if (!hasReinf) issues.push("חסר זיון");
+  const isReinf = isReinforcementDetail(el);
 
-  if (!isValid(el.material?.concrete_grade)) issues.push("חסר סוג בטון");
+  // Reinforcement — skip for reinforcement details (they ARE the reinforcement)
+  // Also skip if reinforcement details exist as separate elements in this analysis
+  if (!isReinf) {
+    const hasReinf = isValid(reinf.raw_text) || isValid(reinf.main_bars?.top)
+      || isValid(reinf.main_bars?.bottom) || isValid(reinf.stirrups?.diameter);
+    if (!hasReinf && !contextHasReinfDetails) {
+      issues.push("חסר זיון");
+    }
+  }
+
+  // Concrete grade — only for concrete structural elements, not steel reinforcement
+  if (!isReinf) {
+    if (!isValid(el.material?.concrete_grade)) issues.push("חסר סוג בטון");
+  }
 
   return issues;
 }
 
-export function getElementStatus(el) {
-  const issues = analyzeElement(el);
+export function getElementStatus(el, contextHasReinfDetails = false) {
+  const issues = analyzeElement(el, contextHasReinfDetails);
   if (issues.length === 0) return { status: "ok", issues };
   if (issues.length <= 1) return { status: "partial", issues };
   return { status: "missing", issues };
 }
 
-function MissingElementsList({ elements }) {
+function MissingElementsList({ elements, hasReinfDetails }) {
   const problemElements = elements
-    .map((el, i) => ({ el, i, ...getElementStatus(el) }))
+    .map((el, i) => ({ el, i, ...getElementStatus(el, hasReinfDetails) }))
     .filter(e => e.status !== "ok");
 
   if (problemElements.length === 0) return null;
@@ -50,10 +81,13 @@ function MissingElementsList({ elements }) {
 }
 
 export default function ReviewSummaryBar({ elements }) {
+  // Detect if this analysis includes separate reinforcement detail elements
+  const hasReinfDetails = elements.some(el => isReinforcementDetail(el));
+
   let okCount = 0, partialCount = 0, missingCount = 0;
 
   elements.forEach(el => {
-    const { status } = getElementStatus(el);
+    const { status } = getElementStatus(el, hasReinfDetails);
     if (status === "ok") okCount++;
     else if (status === "partial") partialCount++;
     else missingCount++;
@@ -103,7 +137,7 @@ export default function ReviewSummaryBar({ elements }) {
               <p className="mt-0.5">בתוך כל אלמנט תמצא הסבר + כפתור "השלם נתונים חסרים".</p>
             </div>
           </div>
-          <MissingElementsList elements={elements} />
+          <MissingElementsList elements={elements} hasReinfDetails={hasReinfDetails} />
         </div>
       )}
     </div>

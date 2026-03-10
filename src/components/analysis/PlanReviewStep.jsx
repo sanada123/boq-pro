@@ -48,6 +48,14 @@ export default function PlanReviewStep({ planReading, onApprove, onCorrections, 
   const reinfSchedule = ensureArray(planReading.reinforcement_schedule);
   const patterns = ensureArray(planReading.detected_patterns);
 
+  // Detect if analysis includes separate reinforcement detail elements (for type-aware validation)
+  const REINF_PATTERNS = ["פרט זיון", "reinforcement", "rebar", "bar_detail"];
+  const hasReinfDetails = elements.some(el => {
+    const t = (el.type || "").toLowerCase();
+    const id = (el.id || "").toLowerCase();
+    return REINF_PATTERNS.some(p => t.includes(p) || id.includes(p));
+  });
+
   const handleElementCorrect = (index, elementCorrections) => {
     setCorrections(prev => ({
       ...prev,
@@ -166,6 +174,7 @@ export default function PlanReviewStep({ planReading, onApprove, onCorrections, 
                 element={el}
                 index={globalIndex}
                 onCorrect={handleElementCorrect}
+                hasReinfDetails={hasReinfDetails}
               />
             );
           })}
@@ -214,25 +223,40 @@ export default function PlanReviewStep({ planReading, onApprove, onCorrections, 
               <table className="w-full text-xs">
                 <thead>
                   <tr className="bg-slate-50 border-b border-slate-200">
-                    <th className="text-right px-3 py-2 font-semibold text-slate-400">סימון</th>
-                    <th className="text-right px-3 py-2 font-semibold text-slate-400">Ø</th>
+                    <th className="text-right px-3 py-2 font-semibold text-slate-400">#</th>
+                    <th className="text-right px-3 py-2 font-semibold text-slate-400">סוג</th>
+                    <th className="text-right px-3 py-2 font-semibold text-slate-400">Ø (מ״מ)</th>
                     <th className="text-right px-3 py-2 font-semibold text-slate-400">אורך</th>
                     <th className="text-right px-3 py-2 font-semibold text-slate-400">כמות</th>
+                    <th className="text-right px-3 py-2 font-semibold text-slate-400">אורך כולל</th>
+                    <th className="text-right px-3 py-2 font-semibold text-slate-400">משקל</th>
                     <th className="text-right px-3 py-2 font-semibold text-slate-400">צורה</th>
-                    <th className="text-right px-3 py-2 font-semibold text-slate-400">אלמנט</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {reinfSchedule.map((bar, i) => (
-                    <tr key={i} className="border-b border-slate-200/50 hover:bg-black/[0.02]">
-                      <td className="px-3 py-2 eng-mono text-amber-600">{bar.bar_mark}</td>
-                      <td className="px-3 py-2 eng-number text-slate-700">{bar.diameter}</td>
-                      <td className="px-3 py-2 eng-number text-slate-700">{bar.length}</td>
-                      <td className="px-3 py-2 eng-number text-slate-700">{bar.quantity}</td>
-                      <td className="px-3 py-2 text-slate-400">{bar.shape || "—"}</td>
-                      <td className="px-3 py-2 text-slate-400">{bar.element_ref || "—"}</td>
-                    </tr>
-                  ))}
+                  {reinfSchedule.map((bar, i) => {
+                    // Multi-key fallback — the LLM may use different field names
+                    const mark = bar.row_number || bar.bar_mark || bar.number || bar.mark || (i + 1);
+                    const barType = bar.bar_type || bar.type || bar.steel_type || "—";
+                    const dia = bar.diameter_mm || bar.diameter || bar.dia || "—";
+                    const len = bar.length_cm || bar.length || bar.length_mm || "—";
+                    const qty = bar.quantity || bar.count || bar.qty || "—";
+                    const totalLen = bar.total_length_m || bar.total_length || "—";
+                    const weight = bar.weight_kg || bar.weight || "—";
+                    const shape = bar.shape || bar.bend_shape || "—";
+                    return (
+                      <tr key={i} className="border-b border-slate-200/50 hover:bg-black/[0.02]">
+                        <td className="px-3 py-2 eng-mono text-amber-600 font-semibold">{mark}</td>
+                        <td className="px-3 py-2 eng-mono text-slate-500">{barType}</td>
+                        <td className="px-3 py-2 eng-number text-slate-700 font-semibold">{dia}</td>
+                        <td className="px-3 py-2 eng-number text-slate-700">{len}</td>
+                        <td className="px-3 py-2 eng-number text-slate-700">{qty}</td>
+                        <td className="px-3 py-2 eng-number text-slate-500">{totalLen}</td>
+                        <td className="px-3 py-2 eng-number text-slate-500">{weight}</td>
+                        <td className="px-3 py-2 text-slate-400">{shape}</td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
